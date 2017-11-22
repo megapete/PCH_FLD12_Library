@@ -10,4 +10,11 @@
 
 @implementation PCH_FLD12_Library
 
++ (NSString*)FLD12:(NSString *)fileString outputType:(PCH_FLD12_OutputType)outputType
+{
+    NSString *result = [NSString stringWithFormat:@"%@\n\nGotcha!", fileString];
+    
+    return result;
+}
+
 @end
