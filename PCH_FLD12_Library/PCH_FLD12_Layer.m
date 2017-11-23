@@ -44,7 +44,7 @@
         lastSegment = lastSeg.segmentNumber;
     }
     
-    return [[PCH_FLD12_Layer alloc] initWithNumber:number lastSegment:lastSegment innerRadius:innerRadius radialBuild:radialBuild terminal:terminal numParGroups:numParGroups currentDirection:currentDirection cuOrAl:1 numSpacerBlocks:numSpacerBlocks spBlkWidth:spBlkWidth segments:segments]
+    return [[PCH_FLD12_Layer alloc] initWithNumber:number lastSegment:lastSegment innerRadius:innerRadius radialBuild:radialBuild terminal:terminal numParGroups:numParGroups currentDirection:currentDirection cuOrAl:1 numSpacerBlocks:numSpacerBlocks spBlkWidth:spBlkWidth segments:segments];
 }
 
 @end

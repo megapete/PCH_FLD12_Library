@@ -7,6 +7,8 @@
 //
 
 #import "PCH_FLD12_Library.h"
+#import "PCH_Logging.h"
+#include "f2c.h"
 
 @implementation PCH_FLD12_Library
 
