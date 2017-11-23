@@ -14,9 +14,9 @@ typedef NS_ENUM(NSUInteger, PCH_FLD12_OutputType) {
     imperial
 };
 
+
+
 @interface PCH_FLD12_Library : NSObject
-
-
 
 + (NSString*)FLD12:(NSString *)fileString outputType:(PCH_FLD12_OutputType)outputType;
 

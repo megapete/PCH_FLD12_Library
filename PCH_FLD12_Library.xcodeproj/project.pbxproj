@@ -7,11 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D3B72EF81FC646E000317E96 /* PCH_FLD12_Terminal.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EF61FC646E000317E96 /* PCH_FLD12_Terminal.h */; };
+		D3B72EF91FC646E000317E96 /* PCH_FLD12_Terminal.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72EF71FC646E000317E96 /* PCH_FLD12_Terminal.m */; };
+		D3B72EFC1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EFA1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h */; };
+		D3B72EFD1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72EFB1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m */; };
 		D3F4B2CE1FC60C5200DDA73A /* PCH_FLD12_Library.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F4B2CD1FC60C5200DDA73A /* PCH_FLD12_Library.h */; };
 		D3F4B2D01FC60C5200DDA73A /* PCH_FLD12_Library.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F4B2CF1FC60C5200DDA73A /* PCH_FLD12_Library.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D3B72EF61FC646E000317E96 /* PCH_FLD12_Terminal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCH_FLD12_Terminal.h; sourceTree = "<group>"; };
+		D3B72EF71FC646E000317E96 /* PCH_FLD12_Terminal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PCH_FLD12_Terminal.m; sourceTree = "<group>"; };
+		D3B72EFA1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCH_FLD12_TxfoDetails.h; sourceTree = "<group>"; };
+		D3B72EFB1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PCH_FLD12_TxfoDetails.m; sourceTree = "<group>"; };
 		D3F4B2CA1FC60C5200DDA73A /* libPCH_FLD12_Library.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPCH_FLD12_Library.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F4B2CD1FC60C5200DDA73A /* PCH_FLD12_Library.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCH_FLD12_Library.h; sourceTree = "<group>"; };
 		D3F4B2CF1FC60C5200DDA73A /* PCH_FLD12_Library.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PCH_FLD12_Library.m; sourceTree = "<group>"; };
@@ -49,6 +57,10 @@
 			children = (
 				D3F4B2CD1FC60C5200DDA73A /* PCH_FLD12_Library.h */,
 				D3F4B2CF1FC60C5200DDA73A /* PCH_FLD12_Library.m */,
+				D3B72EFA1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h */,
+				D3B72EFB1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m */,
+				D3B72EF61FC646E000317E96 /* PCH_FLD12_Terminal.h */,
+				D3B72EF71FC646E000317E96 /* PCH_FLD12_Terminal.m */,
 			);
 			path = PCH_FLD12_Library;
 			sourceTree = "<group>";
@@ -60,6 +72,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3B72EFC1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h in Headers */,
+				D3B72EF81FC646E000317E96 /* PCH_FLD12_Terminal.h in Headers */,
 				D3F4B2CE1FC60C5200DDA73A /* PCH_FLD12_Library.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,7 +135,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3B72EFD1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m in Sources */,
 				D3F4B2D01FC60C5200DDA73A /* PCH_FLD12_Library.m in Sources */,
+				D3B72EF91FC646E000317E96 /* PCH_FLD12_Terminal.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
