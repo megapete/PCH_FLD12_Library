@@ -11,6 +11,10 @@
 		D3B72EF91FC646E000317E96 /* PCH_FLD12_Terminal.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72EF71FC646E000317E96 /* PCH_FLD12_Terminal.m */; };
 		D3B72EFC1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EFA1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h */; };
 		D3B72EFD1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72EFB1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m */; };
+		D3B72F001FC654D500317E96 /* PCH_FLD12_Layer.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EFE1FC654D500317E96 /* PCH_FLD12_Layer.h */; };
+		D3B72F011FC654D500317E96 /* PCH_FLD12_Layer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72EFF1FC654D500317E96 /* PCH_FLD12_Layer.m */; };
+		D3B72F041FC721E700317E96 /* PCH_FLD12_Segment.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72F021FC721E700317E96 /* PCH_FLD12_Segment.h */; };
+		D3B72F051FC721E700317E96 /* PCH_FLD12_Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72F031FC721E700317E96 /* PCH_FLD12_Segment.m */; };
 		D3F4B2CE1FC60C5200DDA73A /* PCH_FLD12_Library.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F4B2CD1FC60C5200DDA73A /* PCH_FLD12_Library.h */; };
 		D3F4B2D01FC60C5200DDA73A /* PCH_FLD12_Library.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F4B2CF1FC60C5200DDA73A /* PCH_FLD12_Library.m */; };
 /* End PBXBuildFile section */
@@ -20,6 +24,10 @@
 		D3B72EF71FC646E000317E96 /* PCH_FLD12_Terminal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PCH_FLD12_Terminal.m; sourceTree = "<group>"; };
 		D3B72EFA1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCH_FLD12_TxfoDetails.h; sourceTree = "<group>"; };
 		D3B72EFB1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PCH_FLD12_TxfoDetails.m; sourceTree = "<group>"; };
+		D3B72EFE1FC654D500317E96 /* PCH_FLD12_Layer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCH_FLD12_Layer.h; sourceTree = "<group>"; };
+		D3B72EFF1FC654D500317E96 /* PCH_FLD12_Layer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PCH_FLD12_Layer.m; sourceTree = "<group>"; };
+		D3B72F021FC721E700317E96 /* PCH_FLD12_Segment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCH_FLD12_Segment.h; sourceTree = "<group>"; };
+		D3B72F031FC721E700317E96 /* PCH_FLD12_Segment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PCH_FLD12_Segment.m; sourceTree = "<group>"; };
 		D3F4B2CA1FC60C5200DDA73A /* libPCH_FLD12_Library.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPCH_FLD12_Library.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F4B2CD1FC60C5200DDA73A /* PCH_FLD12_Library.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCH_FLD12_Library.h; sourceTree = "<group>"; };
 		D3F4B2CF1FC60C5200DDA73A /* PCH_FLD12_Library.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PCH_FLD12_Library.m; sourceTree = "<group>"; };
@@ -61,6 +69,10 @@
 				D3B72EFB1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m */,
 				D3B72EF61FC646E000317E96 /* PCH_FLD12_Terminal.h */,
 				D3B72EF71FC646E000317E96 /* PCH_FLD12_Terminal.m */,
+				D3B72EFE1FC654D500317E96 /* PCH_FLD12_Layer.h */,
+				D3B72EFF1FC654D500317E96 /* PCH_FLD12_Layer.m */,
+				D3B72F021FC721E700317E96 /* PCH_FLD12_Segment.h */,
+				D3B72F031FC721E700317E96 /* PCH_FLD12_Segment.m */,
 			);
 			path = PCH_FLD12_Library;
 			sourceTree = "<group>";
@@ -74,6 +86,8 @@
 			files = (
 				D3B72EFC1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h in Headers */,
 				D3B72EF81FC646E000317E96 /* PCH_FLD12_Terminal.h in Headers */,
+				D3B72F001FC654D500317E96 /* PCH_FLD12_Layer.h in Headers */,
+				D3B72F041FC721E700317E96 /* PCH_FLD12_Segment.h in Headers */,
 				D3F4B2CE1FC60C5200DDA73A /* PCH_FLD12_Library.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,6 +152,8 @@
 				D3B72EFD1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m in Sources */,
 				D3F4B2D01FC60C5200DDA73A /* PCH_FLD12_Library.m in Sources */,
 				D3B72EF91FC646E000317E96 /* PCH_FLD12_Terminal.m in Sources */,
+				D3B72F051FC721E700317E96 /* PCH_FLD12_Segment.m in Sources */,
+				D3B72F011FC654D500317E96 /* PCH_FLD12_Layer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
