@@ -17,7 +17,8 @@ typedef NS_ENUM(NSUInteger, PCH_FLD12_OutputType) {
 
 @interface PCH_FLD12_Library : NSObject
 
-+ (NSString *)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *)txfo outputType:(PCH_FLD12_OutputType)outputType;
-+ (NSString *)RunFLD12withFile:(NSString *)fileString outputType:(PCH_FLD12_OutputType)outputType;
++ (NSString *)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *)txfo outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines;
+
++ (NSString *)RunFLD12withString:(NSString *)fileString outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines;
 
 @end
