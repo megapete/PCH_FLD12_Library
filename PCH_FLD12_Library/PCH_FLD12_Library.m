@@ -108,7 +108,7 @@ int FIELDPRPMAIN__(char *baseDirectory);
     
     // Line 2
     nextLine = [NSString stringWithFormat:@"%-10.1d%-10.1d%-10.1f%-10.1d%-10.1d%-10.3f%-10.3f%-10.3f\n",
-                1, // assume that the input data is in metric
+                txfo.inputUnits, 
                 txfo.numPhases,
                 txfo.frequency,
                 txfo.numberOfWoundLimbs,

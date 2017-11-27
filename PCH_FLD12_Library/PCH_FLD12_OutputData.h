@@ -52,7 +52,7 @@ struct SegmentData {
 @property double totalThrustUpper;
 @property double totalThrustLower;
 
-- (id)initWithTransformer:(PCH_FLD12_TxfoDetails *)txfo usingOutputFile:(NSString *)fileString;
-+ (id)dataWithTransformer:(PCH_FLD12_TxfoDetails *)txfo usingOutputFile:(NSString *)fileString;
+- (id)initWithOutputFile:(NSString *)fileString;
++ (id)dataWithOutputFile:(NSString *)fileString;
 
 @end

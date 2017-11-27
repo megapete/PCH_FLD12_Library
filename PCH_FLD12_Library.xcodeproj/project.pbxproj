@@ -15,17 +15,17 @@
 		D359056E1FC769DC00C9A30B /* OUTMET.c in Sources */ = {isa = PBXBuildFile; fileRef = D35905671FC769DC00C9A30B /* OUTMET.c */; };
 		D359056F1FC769DC00C9A30B /* fld8.c in Sources */ = {isa = PBXBuildFile; fileRef = D35905681FC769DC00C9A30B /* fld8.c */; };
 		D35905721FC76ABF00C9A30B /* libf2c.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D35905711FC76ABF00C9A30B /* libf2c.a */; };
-		D35905751FC8860A00C9A30B /* PCH_FLD12_OutputData.h in Headers */ = {isa = PBXBuildFile; fileRef = D35905731FC8860A00C9A30B /* PCH_FLD12_OutputData.h */; };
+		D35905751FC8860A00C9A30B /* PCH_FLD12_OutputData.h in Headers */ = {isa = PBXBuildFile; fileRef = D35905731FC8860A00C9A30B /* PCH_FLD12_OutputData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D35905761FC8860A00C9A30B /* PCH_FLD12_OutputData.m in Sources */ = {isa = PBXBuildFile; fileRef = D35905741FC8860A00C9A30B /* PCH_FLD12_OutputData.m */; };
-		D3B72EF81FC646E000317E96 /* PCH_FLD12_Terminal.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EF61FC646E000317E96 /* PCH_FLD12_Terminal.h */; };
+		D3B72EF81FC646E000317E96 /* PCH_FLD12_Terminal.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EF61FC646E000317E96 /* PCH_FLD12_Terminal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3B72EF91FC646E000317E96 /* PCH_FLD12_Terminal.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72EF71FC646E000317E96 /* PCH_FLD12_Terminal.m */; };
-		D3B72EFC1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EFA1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h */; };
+		D3B72EFC1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EFA1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3B72EFD1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72EFB1FC6493100317E96 /* PCH_FLD12_TxfoDetails.m */; };
-		D3B72F001FC654D500317E96 /* PCH_FLD12_Layer.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EFE1FC654D500317E96 /* PCH_FLD12_Layer.h */; };
+		D3B72F001FC654D500317E96 /* PCH_FLD12_Layer.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72EFE1FC654D500317E96 /* PCH_FLD12_Layer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3B72F011FC654D500317E96 /* PCH_FLD12_Layer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72EFF1FC654D500317E96 /* PCH_FLD12_Layer.m */; };
-		D3B72F041FC721E700317E96 /* PCH_FLD12_Segment.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72F021FC721E700317E96 /* PCH_FLD12_Segment.h */; };
+		D3B72F041FC721E700317E96 /* PCH_FLD12_Segment.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72F021FC721E700317E96 /* PCH_FLD12_Segment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3B72F051FC721E700317E96 /* PCH_FLD12_Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72F031FC721E700317E96 /* PCH_FLD12_Segment.m */; };
-		D3F4B2CE1FC60C5200DDA73A /* PCH_FLD12_Library.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F4B2CD1FC60C5200DDA73A /* PCH_FLD12_Library.h */; };
+		D3F4B2CE1FC60C5200DDA73A /* PCH_FLD12_Library.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F4B2CD1FC60C5200DDA73A /* PCH_FLD12_Library.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3F4B2D01FC60C5200DDA73A /* PCH_FLD12_Library.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F4B2CF1FC60C5200DDA73A /* PCH_FLD12_Library.m */; };
 /* End PBXBuildFile section */
 
@@ -131,14 +131,14 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3F4B2CE1FC60C5200DDA73A /* PCH_FLD12_Library.h in Headers */,
 				D3B72EFC1FC6493100317E96 /* PCH_FLD12_TxfoDetails.h in Headers */,
 				D35905751FC8860A00C9A30B /* PCH_FLD12_OutputData.h in Headers */,
 				D3B72EF81FC646E000317E96 /* PCH_FLD12_Terminal.h in Headers */,
-				D35905601FC7695600C9A30B /* PCH_Logging.h in Headers */,
 				D3B72F001FC654D500317E96 /* PCH_FLD12_Layer.h in Headers */,
 				D3B72F041FC721E700317E96 /* PCH_FLD12_Segment.h in Headers */,
+				D35905601FC7695600C9A30B /* PCH_Logging.h in Headers */,
 				D35905691FC769DC00C9A30B /* f2c.h in Headers */,
-				D3F4B2CE1FC60C5200DDA73A /* PCH_FLD12_Library.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

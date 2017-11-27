@@ -7,27 +7,358 @@
 //
 
 #import "PCH_FLD12_OutputData.h"
+#import "PCH_Logging.h"
+
+@interface PCH_FLD12_OutputData ()
+
++ (NSArray *)nonNullComponentsOfString:(NSString *)srcString;
+
+@end
 
 @implementation PCH_FLD12_OutputData
 
-- (id)initWithTransformer:(PCH_FLD12_TxfoDetails *)txfo usingOutputFile:(NSString *)fileString
+- (id)initWithOutputFile:(NSString *)fileString
 {
     if (self = [super init])
     {
         NSArray *fileLines = [fileString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         
-        int lineIndex = 0;
+        int lineIndex = 2; // first couple of lines are useless
+        
+        PCH_FLD12_TxfoDetails *txfo = [[PCH_FLD12_TxfoDetails alloc] init];
+        
+        txfo.identification = fileLines[lineIndex];
+        
+        // advance to the first data line
+        while (![fileLines[lineIndex] containsString:@"NUMBER OF PHASES"])
+        {
+            lineIndex += 1;
+        }
+        
+        NSArray *lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        NSCharacterSet *floatingPointSet = [NSCharacterSet characterSetWithCharactersInString:@"-+.0123456789"];
+        NSCharacterSet *nonNumber = [floatingPointSet invertedSet];
+        
+        int count = 0;
+        for (NSString *nextComponent in lineComponents)
+        {
+            // DLog(@"Next component: %@", nextComponent);
+            if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+            {
+                if (count == 0)
+                {
+                    txfo.numPhases = (int)[nextComponent doubleValue];
+                    count++;
+                }
+                else
+                {
+                    txfo.sysSCgva = [nextComponent doubleValue];
+                    break;
+                }
+            }
+        }
+        
+        lineIndex++;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        count = 0;
+        for (NSString *nextComponent in lineComponents)
+        {
+            if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+            {
+                if (count == 0)
+                {
+                    txfo.frequency = [nextComponent doubleValue];
+                    count++;
+                }
+                else
+                {
+                    txfo.puImpedance = [nextComponent doubleValue];
+                    break;
+                }
+            }
+        }
+        
+        lineIndex++;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        count = 0;
+        for (NSString *nextComponent in lineComponents)
+        {
+            if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+            {
+                if (count == 0)
+                {
+                    txfo.numberOfWoundLimbs = (int)[nextComponent doubleValue];
+                    count++;
+                }
+                else
+                {
+                    txfo.peakFactor = [nextComponent doubleValue];
+                    break;
+                }
+            }
+        }
+        
+        lineIndex += 2;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        count = 0;
+        for (NSString *nextComponent in lineComponents)
+        {
+            // That fuckin' Andersen put in a single dash in this line so we need to skip it.
+            if ([nextComponent isEqualToString:@"-"])
+            {
+                continue;
+            }
+            
+            if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+            {
+                if (count == 0)
+                {
+                    txfo.lowerZ = [nextComponent doubleValue];
+                    count++;
+                }
+                else
+                {
+                    txfo.tankFactor = [nextComponent doubleValue];
+                    break;
+                }
+            }
+        }
+        
+        lineIndex += 1;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        count = 0;
+        for (NSString *nextComponent in lineComponents)
+        {
+            // That fuckin' Andersen put in a single dash in this line so we need to skip it.
+            if ([nextComponent isEqualToString:@"-"])
+            {
+                continue;
+            }
+            
+            if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+            {
+                if (count == 0)
+                {
+                    txfo.upperZ = [nextComponent doubleValue];
+                    count++;
+                }
+                else
+                {
+                    txfo.legFactor = [nextComponent doubleValue];
+                    break;
+                }
+            }
+        }
+        
+        lineIndex += 1;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        count = 0;
+        for (NSString *nextComponent in lineComponents)
+        {
+            if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+            {
+                if (count == 0)
+                {
+                    txfo.coreDiameter = [nextComponent doubleValue];
+                    count++;
+                }
+                else
+                {
+                    txfo.yokeFactor = [nextComponent doubleValue];
+                    break;
+                }
+            }
+        }
+        
+        lineIndex += 1;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        count = 0;
+        for (NSString *nextComponent in lineComponents)
+        {
+            if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+            {
+                if (count == 0)
+                {
+                    txfo.distanceToTank = [nextComponent doubleValue];
+                    count++;
+                }
+                else
+                {
+                    txfo.scale = [nextComponent doubleValue];
+                    break;
+                }
+            }
+        }
+        
+        lineIndex += 1;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        count = 0;
+        for (NSString *nextComponent in lineComponents)
+        {
+            if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+            {
+                if (count == 0)
+                {
+                    txfo.alcuShield = (int)[nextComponent doubleValue];
+                    count++;
+                }
+                else
+                {
+                    txfo.numFluxLines = (int)[nextComponent doubleValue];
+                    break;
+                }
+            }
+        }
+        
+        // advance to the terminal data line
+        while (![fileLines[lineIndex] containsString:@"TERMINAL NUMBER"])
+        {
+            lineIndex += 1;
+        }
+        
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        int numTerminals = (int)lineComponents.count - 2;
+        int termNums[numTerminals];
+        int termConnections[numTerminals];
+        double termMVAs[numTerminals];
+        double termKVs[numTerminals];
+        
+        for (int i=0; i<numTerminals; i++)
+        {
+            termNums[i] = (int)[(NSString *)lineComponents[2 + i] doubleValue];
+        }
+        
+        lineIndex += 1;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        for (int i=0; i<numTerminals; i++)
+        {
+            NSString *theConnection = (NSString *)(lineComponents[1 + i]);
+            if ([theConnection isEqualToString:@"Y"])
+            {
+                termConnections[i] = 1;
+            }
+            else if ([theConnection isEqualToString:@"D"])
+            {
+                termConnections[i] = 2;
+            }
+        }
+        
+        lineIndex += 1;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        for (int i=0; i<numTerminals; i++)
+        {
+            termMVAs[i] = [(NSString *)lineComponents[1 + i] doubleValue];
+        }
+        
+        lineIndex += 1;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        for (int i=0; i<numTerminals; i++)
+        {
+            termKVs[i] = [(NSString *)lineComponents[1 + i] doubleValue];
+        }
+        
+        NSMutableArray *termArray = [NSMutableArray arrayWithCapacity:numTerminals];
+        for (int i=0; i<numTerminals; i++)
+        {
+            [termArray addObject:[PCH_FLD12_Terminal terminalWithNumber:termNums[i] connection:termConnections[i]  mva:termMVAs[i] kv:termKVs[i]]];
+        }
+        
+        txfo.terminals = [NSArray arrayWithArray:termArray];
+        
+        // advance to the LAYER data line
+        while (![fileLines[lineIndex] containsString:@"NUMBER"])
+        {
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+            lineIndex += 1;
+        }
+        lineIndex += 1;
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        
+        int maxSegNum = 0;
+        NSMutableArray *layerArray = [NSMutableArray array];
+        
+        while (lineComponents.count == 10)
+        {
+            PCH_FLD12_Layer *newLayer = [[PCH_FLD12_Layer alloc] init];
+            
+            newLayer.number = (int)[(NSString *)lineComponents[0] doubleValue];
+            newLayer.lastSegment = (int)[(NSString *)lineComponents[1] doubleValue];
+            maxSegNum = MAX(maxSegNum, newLayer.lastSegment);
+            newLayer.innerRadius = [(NSString *)lineComponents[2] doubleValue];
+            newLayer.radialBuild = [(NSString *)lineComponents[3] doubleValue];
+            newLayer.terminal = (int)[(NSString *)lineComponents[4] doubleValue];
+            newLayer.numParGroups = (int)[(NSString *)lineComponents[5] doubleValue];
+            newLayer.currentDirection = (int)[(NSString *)lineComponents[6] doubleValue];
+            NSString *conductor = (NSString *)lineComponents[7];
+            if ([conductor isEqualToString:@"CU"])
+            {
+                newLayer.cuOrAl = 1;
+            }
+            else
+            {
+                newLayer.cuOrAl = 2;
+            }
+            newLayer.numSpacerBlocks = (int)[(NSString *)lineComponents[8] doubleValue];
+            newLayer.spBlkWidth = [(NSString *)lineComponents[9] doubleValue];
+            
+            [layerArray addObject:newLayer];
+            
+            lineIndex += 1;
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+        }
+        
+        txfo.layers = [NSArray arrayWithArray:layerArray];
+        
+        while (![fileLines[lineIndex] containsString:@"AXIALLY"])
+        {
+            lineIndex += 1;
+        }
+        lineIndex += 1;
+        
+        NSMutableArray *segmentArray = [NSMutableArray arrayWithCapacity:maxSegNum];
+        int firstSegLine = lineIndex;
+        for (; lineIndex < firstSegLine + maxSegNum; lineIndex++)
+        {
+            PCH_FLD12_Segment *newSegment = [[PCH_FLD12_Segment alloc] init];
+            
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+            
+            ZAssert(lineComponents.count == 10, @"Illegal number of segment components!");
+            
+            newSegment.segmentNumber = (int)[(NSString *)lineComponents[0] doubleValue];
+            newSegment.zMin = [(NSString *)lineComponents[2] doubleValue];
+            newSegment.zMax = [(NSString *)lineComponents[3] doubleValue];
+            newSegment.turns = [(NSString *)lineComponents[4] doubleValue];
+            newSegment.activeTurns = [(NSString *)lineComponents[5] doubleValue];
+            newSegment.strandsPerTurn = (int)[(NSString *)lineComponents[6] doubleValue];
+            newSegment.strandsPerLayer = (int)[(NSString *)lineComponents[7] doubleValue];
+            newSegment.strandR = [(NSString *)lineComponents[8] doubleValue];
+            newSegment.strandA = [(NSString *)lineComponents[3] doubleValue];
+            
+            [segmentArray addObject:newSegment];
+            
+        }
+        
         // advance to the first segment data line
         while (![fileLines[lineIndex] containsString:@"SEGMENT NUMBER"])
         {
             lineIndex += 1;
         }
         
-        NSCharacterSet *floatingPointSet = [NSCharacterSet characterSetWithCharactersInString:@"-+.0123456789"];
-        NSCharacterSet *nonNumber = [floatingPointSet invertedSet];
-        
         NSMutableArray *newSegmentData = [NSMutableArray array];
-        NSArray *lineComponents;
+       
         
         while ([fileLines[lineIndex] containsString:@"SEGMENT NUMBER"])
         {
@@ -283,6 +614,7 @@
                 }
             }
             
+            [newSegmentData addObject:[NSData dataWithBytes:&nextSegment length:sizeof(struct SegmentData)]];
             lineIndex += 2;
         }
         
@@ -449,6 +781,27 @@
     }
     
     return self;
+}
+
++ (id)dataWithOutputFile:(NSString *)fileString
+{
+    return [[PCH_FLD12_OutputData alloc] initWithOutputFile:fileString];
+}
+
++ (NSArray *)nonNullComponentsOfString:(NSString *)srcString
+{
+    NSArray *lineComponents = [srcString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    NSIndexSet *nonNullIndices = [lineComponents indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (![obj isEqualToString:@""])
+            return YES;
+        else
+            return NO;
+    }];
+    
+    // DLog(@"Array Count:%lu", (unsigned long)lineComponents.count);
+    
+    return [lineComponents objectsAtIndexes:nonNullIndices];
 }
 
 @end
