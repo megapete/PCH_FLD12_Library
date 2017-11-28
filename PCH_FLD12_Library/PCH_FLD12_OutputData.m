@@ -345,10 +345,19 @@
             newSegment.strandsPerTurn = (int)[(NSString *)lineComponents[6] doubleValue];
             newSegment.strandsPerLayer = (int)[(NSString *)lineComponents[7] doubleValue];
             newSegment.strandR = [(NSString *)lineComponents[8] doubleValue];
-            newSegment.strandA = [(NSString *)lineComponents[3] doubleValue];
+            newSegment.strandA = [(NSString *)lineComponents[9] doubleValue];
             
             [segmentArray addObject:newSegment];
-            
+        }
+        
+        // add the segments to their respective layers
+        NSRange segmentRange = NSMakeRange(0, 0);
+        for (PCH_FLD12_Layer *nextLayer in layerArray)
+        {
+            // first time in, location = 0
+            segmentRange.length = nextLayer.lastSegment - segmentRange.location;
+            nextLayer.segments = [segmentArray subarrayWithRange:segmentRange];
+            segmentRange.location = nextLayer.lastSegment;
         }
         
         // advance to the first segment data line
@@ -359,15 +368,24 @@
         
         NSMutableArray *newSegmentData = [NSMutableArray array];
        
-        
         while ([fileLines[lineIndex] containsString:@"SEGMENT NUMBER"])
         {
             struct SegmentData nextSegment;
             
             // parse the segment data
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
-            // NSMutableArray *numericalComponents = [NSMutableArray array];
+            for (NSString *nextComponent in lineComponents)
+            {
+                if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+                {
+                    nextSegment.number = (int)[nextComponent doubleValue];
+                    break; // this is the only number in this line
+                }
+            }
+            
+            lineIndex++;
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 1
             for (NSString *nextComponent in lineComponents)
@@ -380,7 +398,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 2
             int count = 0;
@@ -402,7 +420,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 3
             for (NSString *nextComponent in lineComponents)
@@ -415,7 +433,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 4
             count = 0;
@@ -437,7 +455,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 5
             count = 0;
@@ -459,7 +477,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 6
             for (NSString *nextComponent in lineComponents)
@@ -472,7 +490,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 7
             count = 0;
@@ -494,7 +512,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 8
             for (NSString *nextComponent in lineComponents)
@@ -507,7 +525,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 9
             count = 0;
@@ -529,7 +547,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 10
             count = 0;
@@ -551,7 +569,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 11
             for (NSString *nextComponent in lineComponents)
@@ -564,7 +582,7 @@
             }
             
             lineIndex++;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 12
             for (NSString *nextComponent in lineComponents)
@@ -578,7 +596,7 @@
             
             // Line 13 has nothing
             lineIndex += 2;
-            lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 14
             count = 0;
@@ -620,7 +638,7 @@
         
         // We ignore the whole "critical stresses" part (we can find them in the segment details already parsed)
         lineIndex += 11;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line VOLTS PER TURN
         for (NSString *nextComponent in lineComponents)
@@ -633,7 +651,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line FLUX DENSITY AT TANK
         for (NSString *nextComponent in lineComponents)
@@ -646,7 +664,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line FLUX DENSITY AT CORE LEG
         for (NSString *nextComponent in lineComponents)
@@ -659,7 +677,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line BASE MVA
         for (NSString *nextComponent in lineComponents)
@@ -672,7 +690,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line REACTANCE
         for (NSString *nextComponent in lineComponents)
@@ -685,7 +703,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line RESISTANCE
         for (NSString *nextComponent in lineComponents)
@@ -698,7 +716,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line IMPEDANCE
         for (NSString *nextComponent in lineComponents)
@@ -711,7 +729,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line SYSTEM IMPEDANCE
         for (NSString *nextComponent in lineComponents)
@@ -724,7 +742,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line TOTAL IMPEDANCE
         for (NSString *nextComponent in lineComponents)
@@ -737,7 +755,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line FORCE IMPEDANCE
         for (NSString *nextComponent in lineComponents)
@@ -754,7 +772,7 @@
             lineIndex += 1;
         }
         
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line UPPER SUPPORT thrust
         for (NSString *nextComponent in lineComponents)
@@ -767,7 +785,7 @@
         }
         
         lineIndex += 1;
-        lineComponents = [fileLines[lineIndex] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line LOWER SUPPORT thrust
         for (NSString *nextComponent in lineComponents)
@@ -783,11 +801,14 @@
     return self;
 }
 
+
 + (id)dataWithOutputFile:(NSString *)fileString
 {
     return [[PCH_FLD12_OutputData alloc] initWithOutputFile:fileString];
 }
 
+
+// Helper function
 + (NSArray *)nonNullComponentsOfString:(NSString *)srcString
 {
     NSArray *lineComponents = [srcString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
