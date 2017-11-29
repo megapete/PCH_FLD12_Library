@@ -65,6 +65,16 @@ int FIELDPRPMAIN__(char *baseDirectory);
         return @"ERROR - Error in FLD8";
     }
     
+    // save a copy of the FLD8 output file for subsequent analysis (this can be commented out if it's never used)
+    NSString *outputFileName = [NSString stringWithFormat:@"%@OUTPUT", userTempDir];
+    NSString *fld8OutputName = [NSString stringWithFormat:@"%@OUTPUT.fld8", userTempDir];
+    [fileMgr removeItemAtPath:fld8OutputName error:&wError];
+    if (![fileMgr copyItemAtPath:outputFileName toPath:fld8OutputName error:&wError])
+    {
+        DLog(@"Error copying OUTPUT.fld8. %@", wError.localizedDescription);
+        return @"ERROR - FLD8 did not create OUTPUT file";
+    }
+    
     if (outputType == metric)
     {
         if (OUTMETMAIN__((char *)[userTempDir cStringUsingEncoding:NSUTF8StringEncoding]) != 0)
@@ -91,8 +101,7 @@ int FIELDPRPMAIN__(char *baseDirectory);
         }
     }
     
-    NSString *outputFileName = [NSString stringWithFormat:@"%@OUTPUT", userTempDir];
-    
+    // The current file named "OUTPUT" is from either OUTMET or OUTENG
     NSString *result = [NSString stringWithContentsOfFile:outputFileName encoding:NSUTF8StringEncoding error:&wError];
     
     return result;
@@ -203,7 +212,21 @@ int FIELDPRPMAIN__(char *baseDirectory);
         [result appendString:nextLine];
     }
     
+    NSString *userTempDir = [NSString stringWithFormat:@"%@RESULT", NSTemporaryDirectory()];
+    
+    NSURL *resultURL = [NSURL fileURLWithPath:userTempDir];
+    
+    [result writeToURL:resultURL atomically:false encoding:NSUTF8StringEncoding error:NULL];
+    
     return [PCH_FLD12_Library RunFLD12withString:result outputType:outputType withFluxLines:withFluxLines];
 }
+
++ (PCH_FLD12_OutputData *)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *)txfo outputType:(PCH_FLD12_OutputType)outputType
+{
+    NSString *outputString = [PCH_FLD12_Library RunFLD12withTxfo:txfo outputType:outputType withFluxLines:false];
+    
+    return [PCH_FLD12_OutputData dataWithOutputFile:outputString];
+}
+
 
 @end

@@ -34,8 +34,8 @@ struct SegmentData {
     double scCombinedForce;
 };
 
-@property PCH_FLD12_TxfoDetails *inputData;
-@property NSArray *segmentData;
+@property PCH_FLD12_TxfoDetails * _Nullable inputData;
+@property NSArray * _Nullable segmentData;
 
 @property double VperN;
 @property double BmaxAtTank;
@@ -52,7 +52,7 @@ struct SegmentData {
 @property double totalThrustUpper;
 @property double totalThrustLower;
 
-- (id)initWithOutputFile:(NSString *)fileString;
-+ (id)dataWithOutputFile:(NSString *)fileString;
+- (id _Nonnull)initWithOutputFile:(NSString *_Nonnull)fileString;
++ (id _Nonnull)dataWithOutputFile:(NSString *_Nonnull)fileString;
 
 @end

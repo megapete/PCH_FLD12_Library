@@ -25,8 +25,8 @@
 @property double sysSCgva;
 @property double puImpedance;
 @property double peakFactor;
-@property int numTerminals;
-@property int numLayers;
+@property (readonly) int numTerminals;
+@property (readonly) int numLayers;
 @property int dispElon;
 @property double deAmount;
 @property double tankFactor;

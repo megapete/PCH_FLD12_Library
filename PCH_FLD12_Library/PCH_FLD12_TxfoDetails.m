@@ -10,6 +10,16 @@
 
 @implementation PCH_FLD12_TxfoDetails
 
+- (int)numTerminals
+{
+    return (int)self.terminals.count;
+}
+
+- (int)numLayers
+{
+    return (int)self.layers.count;
+}
+
 - (id)initWithId:(NSString *)identification inputUnits:(int)inputUnits numPhases:(int)numPhases frequency:(double)frequency numberOfWoundLimbs:(int)numberOfWoundLimbs lowerZ:(double)lowerZ upperZ:(double)upperZ coreDiameter:(double)coreDiameter distanceToTank:(double)distanceToTank alcuShield:(int)alcuShield sysSCgva:(double)sysSCgva puImpedance:(double)puImpedance peakFactor:(double)peakFactor numTerminals:(int)numTerminals numLayers:(int)numLayers dispElon:(int)dispElon deAmount:(double)deAmount tankFactor:(double)tankFactor legFactor:(double)legFactor yokeFactor:(double)yokeFactor scale:(double)scale numFluxLines:(int)numFluxLines terminals:(NSArray *)terminals layers:(NSArray*)layers
 {
     if (self = [super init])
@@ -27,8 +37,8 @@
         self.sysSCgva = sysSCgva;
         self.puImpedance = puImpedance;
         self.peakFactor = peakFactor;
-        self.numTerminals = numTerminals;
-        self.numLayers = numLayers;
+        // self.numTerminals = numTerminals;
+        // self.numLayers = numLayers;
         self.dispElon = dispElon;
         self.deAmount = deAmount;
         self.tankFactor = tankFactor;

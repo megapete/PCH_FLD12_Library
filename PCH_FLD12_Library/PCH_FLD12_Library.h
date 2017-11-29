@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "PCH_FLD12_TxfoDetails.h"
+#import "PCH_FLD12_OutputData.h"
 
 // Apparently using NS_ENUM will make the enum usable in Swift code
 typedef NS_ENUM(NSUInteger, PCH_FLD12_OutputType) {
@@ -17,8 +18,10 @@ typedef NS_ENUM(NSUInteger, PCH_FLD12_OutputType) {
 
 @interface PCH_FLD12_Library : NSObject
 
-+ (NSString *)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *)txfo outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines;
++ (NSString * _Nonnull)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *_Nonnull)txfo outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines;
 
-+ (NSString *)RunFLD12withString:(NSString *)fileString outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines;
++ (NSString * _Nonnull)RunFLD12withString:(NSString *_Nonnull)fileString outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines;
+
++ (PCH_FLD12_OutputData * _Nonnull)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *_Nonnull)txfo outputType:(PCH_FLD12_OutputType)outputType;
 
 @end

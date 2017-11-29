@@ -104,6 +104,9 @@
         lineIndex += 2;
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
+        // we need to save this becuase of a fucking stupid Andersen issue
+        double lowerZ = 0.0;
+        
         count = 0;
         for (NSString *nextComponent in lineComponents)
         {
@@ -118,6 +121,7 @@
                 if (count == 0)
                 {
                     txfo.lowerZ = [nextComponent doubleValue];
+                    lowerZ = txfo.lowerZ;
                     count++;
                 }
                 else
@@ -175,6 +179,9 @@
                 }
             }
         }
+        
+        // The output file doesn't indicate the units of the file itself, so we use some obvious logic. If the core diameter is greater than 50.0 we assume that the file is in metric.
+        txfo.inputUnits = (txfo.coreDiameter > 50.0 ? 1 : 2);
         
         lineIndex += 1;
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
@@ -321,6 +328,8 @@
         
         txfo.layers = [NSArray arrayWithArray:layerArray];
         
+        
+        
         while (![fileLines[lineIndex] containsString:@"AXIALLY"])
         {
             lineIndex += 1;
@@ -338,8 +347,8 @@
             ZAssert(lineComponents.count == 10, @"Illegal number of segment components!");
             
             newSegment.segmentNumber = (int)[(NSString *)lineComponents[0] doubleValue];
-            newSegment.zMin = [(NSString *)lineComponents[2] doubleValue];
-            newSegment.zMax = [(NSString *)lineComponents[3] doubleValue];
+            newSegment.zMin = [(NSString *)lineComponents[2] doubleValue] + lowerZ;
+            newSegment.zMax = [(NSString *)lineComponents[3] doubleValue] + lowerZ;
             newSegment.turns = [(NSString *)lineComponents[4] doubleValue];
             newSegment.activeTurns = [(NSString *)lineComponents[5] doubleValue];
             newSegment.strandsPerTurn = (int)[(NSString *)lineComponents[6] doubleValue];
@@ -359,6 +368,8 @@
             nextLayer.segments = [segmentArray subarrayWithRange:segmentRange];
             segmentRange.location = nextLayer.lastSegment;
         }
+        
+        self.inputData = txfo;
         
         // advance to the first segment data line
         while (![fileLines[lineIndex] containsString:@"SEGMENT NUMBER"])
