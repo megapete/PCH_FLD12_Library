@@ -12,7 +12,7 @@
 
 @interface PCH_FLD12_TxfoDetails : NSObject
 
-@property NSString *identification;
+@property NSString *_Nonnull identification;
 @property int inputUnits;
 @property int numPhases;
 @property double frequency;

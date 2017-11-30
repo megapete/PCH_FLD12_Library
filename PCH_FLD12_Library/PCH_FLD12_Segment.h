@@ -20,8 +20,8 @@
 @property double strandR;
 @property double strandA;
 
-- (id)initWithNumber:(int)segmentNumber zMin:(double)zMin zMax:(double)zMax turns:(double)turns activeTurns:(double)activeTurns strandsPerTurn:(int)strandsPerTurn strandsPerLayer:(int)strandsPerLayer strandR:(double)strandR strandA:(double)strandA;
+- (id _Nonnull)initWithNumber:(int)segmentNumber zMin:(double)zMin zMax:(double)zMax turns:(double)turns activeTurns:(double)activeTurns strandsPerTurn:(int)strandsPerTurn strandsPerLayer:(int)strandsPerLayer strandR:(double)strandR strandA:(double)strandA;
 
-+ (id)segmentWithNumber:(int)segmentNumber zMin:(double)zMin zMax:(double)zMax turns:(double)turns activeTurns:(double)activeTurns strandsPerTurn:(int)strandsPerTurn strandsPerLayer:(int)strandsPerLayer strandR:(double)strandR strandA:(double)strandA;
++ (id _Nonnull)segmentWithNumber:(int)segmentNumber zMin:(double)zMin zMax:(double)zMax turns:(double)turns activeTurns:(double)activeTurns strandsPerTurn:(int)strandsPerTurn strandsPerLayer:(int)strandsPerLayer strandR:(double)strandR strandA:(double)strandA;
 
 @end

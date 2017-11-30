@@ -47,6 +47,9 @@ int FIELDPRPMAIN__(char *baseDirectory);
     NSError *wError;
     [fileMgr removeItemAtPath:inp1Fil error:&wError];
     
+    // Remove the BAS.FIL file if it exists
+    [fileMgr removeItemAtPath:[NSString stringWithFormat:@"%@BAS.FIL", userTempDir] error:&wError];
+    
     if (![fileString writeToFile:inp1Fil atomically:NO encoding:NSUTF8StringEncoding error:&wError])
     {
         DLog(@"Error creating INP1.FIL. %@", wError.localizedDescription);
@@ -94,6 +97,7 @@ int FIELDPRPMAIN__(char *baseDirectory);
     
     if (withFluxLines)
     {
+        // Create the "BAS.FIL" file with the flux lines in it
         if (FIELDPRPMAIN__((char *)[userTempDir cStringUsingEncoding:NSUTF8StringEncoding]) != 0)
         {
             DLog(@"Error in FieldPrep. %@", wError.localizedDescription);

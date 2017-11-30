@@ -850,13 +850,13 @@ L702:
 	    if (segm[i__ + 15999] > .5f) {
 		goto L706;
 	    }
-	    if ((r__1 = xy[(n << 1) - 2] - segm[i__ - 1], dabs(r__1)) < 1e-4f 
-		    && (r__2 = xy[(n << 1) - 1] - segm[i__ + 3999], dabs(r__2)
+        if (((void)(r__1 = xy[(n << 1) - 2] - segm[i__ - 1]), dabs(r__1)) < 1e-4f 
+            && ((void)(r__2 = xy[(n << 1) - 1] - segm[i__ + 3999]), dabs(r__2)
 		    ) < 1e-4f) {
 		goto L703;
 	    }
-	    if ((r__1 = xy[(n << 1) - 2] - segm[i__ + 7999], dabs(r__1)) < 
-		    1e-4f && (r__2 = xy[(n << 1) - 1] - segm[i__ + 11999], 
+        if (((void)(r__1 = xy[(n << 1) - 2] - segm[i__ + 7999]), dabs(r__1)) < 
+            1e-4f && ((void)(r__2 = xy[(n << 1) - 1] - segm[i__ + 11999]), 
 		    dabs(r__2)) < 1e-4f) {
 		goto L704;
 	    }

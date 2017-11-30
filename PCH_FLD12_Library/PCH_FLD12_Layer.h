@@ -22,12 +22,12 @@
 @property int numSpacerBlocks;
 @property double spBlkWidth;
 
-@property NSArray *segments;
+@property NSArray *_Nullable segments;
 
-- (id)initWithNumber:(int)number lastSegment:(int)lastSegment innerRadius:(double)innerRadius radialBuild:(double)radialBuild terminal:(int)terminal numParGroups:(int)numParGroups currentDirection:(int)currentDirection cuOrAl:(int)cuOrAl numSpacerBlocks:(int)numSpacerBlocks spBlkWidth:(double)spBlkWidth segments:(NSArray*)segments;
+- (id _Nonnull)initWithNumber:(int)number lastSegment:(int)lastSegment innerRadius:(double)innerRadius radialBuild:(double)radialBuild terminal:(int)terminal numParGroups:(int)numParGroups currentDirection:(int)currentDirection cuOrAl:(int)cuOrAl numSpacerBlocks:(int)numSpacerBlocks spBlkWidth:(double)spBlkWidth segments:(NSArray*_Nullable)segments;
 
-+ (id)layerWithNumber:(int)number lastSegment:(int)lastSegment innerRadius:(double)innerRadius radialBuild:(double)radialBuild terminal:(int)terminal numParGroups:(int)numParGroups currentDirection:(int)currentDirection cuOrAl:(int)cuOrAl numSpacerBlocks:(int)numSpacerBlocks spBlkWidth:(double)spBlkWidth;
++ (id _Nonnull)layerWithNumber:(int)number lastSegment:(int)lastSegment innerRadius:(double)innerRadius radialBuild:(double)radialBuild terminal:(int)terminal numParGroups:(int)numParGroups currentDirection:(int)currentDirection cuOrAl:(int)cuOrAl numSpacerBlocks:(int)numSpacerBlocks spBlkWidth:(double)spBlkWidth;
 
-+ (id)layerWithNumber:(int)number innerRadius:(double)innerRadius radialBuild:(double)radialBuild terminal:(int)terminal numParGroups:(int)numParGroups currentDirection:(int)currentDirection numSpacerBlocks:(int)numSpacerBlocks spBlkWidth:(double)spBlkWidth segments:(NSArray*)segments;
++ (id _Nonnull)layerWithNumber:(int)number innerRadius:(double)innerRadius radialBuild:(double)radialBuild terminal:(int)terminal numParGroups:(int)numParGroups currentDirection:(int)currentDirection numSpacerBlocks:(int)numSpacerBlocks spBlkWidth:(double)spBlkWidth segments:(NSArray*_Nullable)segments;
 
 @end

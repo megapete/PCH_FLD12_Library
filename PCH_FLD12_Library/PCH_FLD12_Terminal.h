@@ -15,7 +15,7 @@
 @property double mva;
 @property double kv;
 
-- (id)initWithNumber:(int)number connection:(int)connection mva:(double)mva kv:(double)kv;
-+ (id)terminalWithNumber:(int)number connection:(int)connection mva:(double)mva kv:(double)kv;
+- (id _Nonnull)initWithNumber:(int)number connection:(int)connection mva:(double)mva kv:(double)kv;
++ (id _Nonnull)terminalWithNumber:(int)number connection:(int)connection mva:(double)mva kv:(double)kv;
 
 @end
