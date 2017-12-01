@@ -7,6 +7,13 @@
 //
 
 #import "PCH_FLD12_TxfoDetails.h"
+#import "PCH_Logging.h"
+
+@interface PCH_FLD12_TxfoDetails ()
+
++ (NSArray *)nonNullComponentsOfString:(NSString *)srcString;
+
+@end
 
 @implementation PCH_FLD12_TxfoDetails
 
@@ -66,6 +73,164 @@
 + (id)txfoDetailsWithId:(NSString *)identification inputUnits:(int)inputUnits numPhases:(int)numPhases frequency:(double)frequency numberOfWoundLimbs:(int)numberOfWoundLimbs lowerZ:(double)lowerZ upperZ:(double)upperZ coreDiameter:(double)coreDiameter distanceToTank:(double)distanceToTank terminals:(NSArray *)terminals layers:(NSArray *)layers
 {
     return [[PCH_FLD12_TxfoDetails alloc] initWithId:identification inputUnits:inputUnits numPhases:numPhases frequency:frequency numberOfWoundLimbs:numberOfWoundLimbs lowerZ:lowerZ upperZ:upperZ coreDiameter:coreDiameter distanceToTank:distanceToTank alcuShield:0 sysSCgva:0.0 puImpedance:0.0 peakFactor:1.8 numTerminals:(int)terminals.count numLayers:(int)layers.count dispElon:0 deAmount:0.0 tankFactor:0.0 legFactor:0.0 yokeFactor:0.0 scale:1.0 numFluxLines:25 terminals:terminals layers:layers];
+}
+
+- (id)initWithURL:(NSURL *)url
+{
+    NSError *wError;
+    NSString *file;
+    
+    if (!(file = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&wError]))
+    {
+        DLog(@"ERROR - %@", wError.description);
+        return NULL;
+    }
+    
+    // strip out any '\r's in the string to avoid blank strings
+    NSArray *fileLines = [[file stringByReplacingOccurrencesOfString:@"\r" withString:@""] componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    int lineIndex = 0;
+    
+    // Line 1 is ID
+    NSString *identification = fileLines[lineIndex];
+    lineIndex += 1;
+    
+    NSArray *lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
+    lineIndex += 1;
+    
+    // Line 2
+    int inputUnits = [(NSString *)lineComponents[0] intValue];
+    int numPhases = [(NSString *)lineComponents[1] intValue];
+    double frequency = [(NSString *)lineComponents[2] doubleValue];
+    int numWoundLimbs = [(NSString *)lineComponents[3] intValue];
+    double fractionOfWindHt = [(NSString *)lineComponents[4] doubleValue]; // this value isn't used
+    double zLowerBoundary = [(NSString *)lineComponents[5] doubleValue];
+    double zUpperBoundary = [(NSString *)lineComponents[6] doubleValue];
+    double coreDiameter = [(NSString *)lineComponents[7] doubleValue];
+    
+    lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
+    lineIndex += 1;
+    
+    // Line 3
+    double distanceToTank = [(NSString *)lineComponents[0] doubleValue];
+    int alcuShield = [(NSString *)lineComponents[1] intValue];
+    double sysScGVA = [(NSString *)lineComponents[2] doubleValue];
+    double optionalPUImp = [(NSString *)lineComponents[3] doubleValue];
+    double peakFactpr = [(NSString *)lineComponents[4] doubleValue];
+    int numTerminals = [(NSString *)lineComponents[5] intValue];
+    int numLayers = [(NSString *)lineComponents[6] doubleValue];
+    
+    lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
+    lineIndex += 1;
+    
+    // Line 4
+    int dispElon = [(NSString *)lineComponents[0] intValue];
+    double deAmount = [(NSString *)lineComponents[1] doubleValue];
+    double tankFactor = [(NSString *)lineComponents[2] doubleValue];
+    double legFactor = [(NSString *)lineComponents[3] doubleValue];
+    double yokeFactor = [(NSString *)lineComponents[4] doubleValue];
+    double scale = [(NSString *)lineComponents[5] doubleValue];
+    int numFluxLines = [(NSString *)lineComponents[6] intValue];
+    
+    NSMutableArray *terminals = [NSMutableArray array];
+    
+    lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
+    lineIndex += 1;
+    
+    for (int i=0; i<numTerminals; i++)
+    {
+        int terminalNum = [(NSString *)lineComponents[0] intValue];
+        int connection = [(NSString *)lineComponents[1] intValue];
+        double mva = [(NSString *)lineComponents[2] doubleValue];
+        double kv = [(NSString *)lineComponents[3] doubleValue];
+        
+        [terminals addObject:[PCH_FLD12_Terminal terminalWithNumber:terminalNum connection:connection mva:mva kv:kv]];
+        
+        lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
+        lineIndex += 1;
+    }
+    
+    NSMutableArray *layers = [NSMutableArray array];
+    int maxSegment = 0;
+    
+    for (int i=0; i<numLayers; i++)
+    {
+        int layerNumber = [(NSString *)lineComponents[0] intValue];
+        int lastSegment = [(NSString *)lineComponents[1] intValue];
+        maxSegment = (lastSegment > maxSegment ? lastSegment : maxSegment);
+        double innerRadius = [(NSString *)lineComponents[2] doubleValue];
+        double radialBuild = [(NSString *)lineComponents[3] doubleValue];
+        
+        lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
+        lineIndex += 1;
+        
+        int terminalNum = [(NSString *)lineComponents[0] intValue];
+        int numParGroups = [(NSString *)lineComponents[1] intValue];
+        int currentDirection = [(NSString *)lineComponents[2] intValue];
+        int cuOrAl = [(NSString *)lineComponents[3] intValue];
+        int numSpBlks = [(NSString *)lineComponents[4] intValue];
+        double spacerBlockWidth = [(NSString *)lineComponents[5] doubleValue];
+        
+        [layers addObject:[PCH_FLD12_Layer layerWithNumber:layerNumber lastSegment:lastSegment innerRadius:innerRadius radialBuild:radialBuild terminal:terminalNum numParGroups:numParGroups currentDirection:currentDirection cuOrAl:cuOrAl numSpacerBlocks:numSpBlks spBlkWidth:spacerBlockWidth]];
+        
+        lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
+        lineIndex += 1;
+    }
+    
+    NSMutableArray *segments = [NSMutableArray array];
+    
+    for (int i=0; i<maxSegment; i++)
+    {
+        int segmentNumber = [(NSString *)lineComponents[0] intValue];
+        double zMin = [(NSString *)lineComponents[1] doubleValue];
+        double zMax = [(NSString *)lineComponents[2] doubleValue];
+        double turns = [(NSString *)lineComponents[3] doubleValue];
+        double activeTurns = [(NSString *)lineComponents[4] doubleValue];
+        
+        lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
+        lineIndex += 1;
+        
+        int strandsPerTurn = [(NSString *)lineComponents[0] intValue];
+        int strandsPerLayer = [(NSString *)lineComponents[1] intValue];
+        double strandR = [(NSString *)lineComponents[2] doubleValue];
+        double strandA = [(NSString *)lineComponents[3] doubleValue];
+        
+        [segments addObject:[PCH_FLD12_Segment segmentWithNumber:segmentNumber zMin:zMin zMax:zMax turns:turns activeTurns:activeTurns strandsPerTurn:strandsPerTurn strandsPerLayer:strandsPerLayer strandR:strandR strandA:strandA]];
+        
+        lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
+        lineIndex += 1;
+    }
+    
+    NSRange segmentRange = NSMakeRange(0, 0);
+    for (PCH_FLD12_Layer *nextLayer in layers)
+    {
+        segmentRange.length = nextLayer.lastSegment - segmentRange.location;
+        nextLayer.segments = [segments subarrayWithRange:segmentRange];
+        segmentRange.location = nextLayer.lastSegment;
+    }
+    
+    return [self initWithId:identification inputUnits:inputUnits numPhases:numPhases frequency:frequency numberOfWoundLimbs:numWoundLimbs lowerZ:zLowerBoundary upperZ:zUpperBoundary coreDiameter:coreDiameter distanceToTank:distanceToTank alcuShield:alcuShield sysSCgva:sysScGVA puImpedance:optionalPUImp peakFactor:peakFactpr numTerminals:numTerminals numLayers:numLayers dispElon:dispElon deAmount:deAmount tankFactor:tankFactor legFactor:legFactor yokeFactor:yokeFactor scale:scale numFluxLines:numFluxLines terminals:terminals layers:layers];
+}
+
++ (id _Nullable)txfoDetailsWithURL:(NSURL *_Nonnull)url
+{
+    return [[PCH_FLD12_TxfoDetails alloc] initWithURL:url];
+}
+
+// Helper function
++ (NSArray *)nonNullComponentsOfString:(NSString *)srcString
+{
+    NSArray *lineComponents = [srcString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    NSIndexSet *nonNullIndices = [lineComponents indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (![obj isEqualToString:@""])
+            return YES;
+        else
+            return NO;
+    }];
+    
+    // DLog(@"Array Count:%lu", (unsigned long)lineComponents.count);
+    
+    return [lineComponents objectsAtIndexes:nonNullIndices];
 }
 
 @end

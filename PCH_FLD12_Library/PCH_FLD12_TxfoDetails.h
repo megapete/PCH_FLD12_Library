@@ -47,4 +47,7 @@
 
 + (id _Nonnull)txfoDetailsWithId:(NSString *_Nonnull)identification inputUnits:(int)inputUnits numPhases:(int)numPhases frequency:(double)frequency numberOfWoundLimbs:(int)numberOfWoundLimbs lowerZ:(double)lowerZ upperZ:(double)upperZ coreDiameter:(double)coreDiameter distanceToTank:(double)distanceToTank terminals:(NSArray *_Nullable)terminals layers:(NSArray *_Nullable)layers;
 
+- (id _Nullable)initWithURL:(NSURL *_Nonnull)url;
++ (id _Nullable)txfoDetailsWithURL:(NSURL *_Nonnull)url;
+
 @end
