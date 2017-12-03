@@ -77,6 +77,7 @@
 
 - (id)initWithURL:(NSURL *)url
 {
+    // This function will return NULL if the file is not a valid FLD12 input file
     NSError *wError;
     NSString *file;
     
@@ -90,6 +91,11 @@
     NSArray *fileLines = [[file stringByReplacingOccurrencesOfString:@"\r" withString:@""] componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
     int lineIndex = 0;
     
+    if (fileLines.count < 14)
+    {
+        return NULL;
+    }
+    
     // Line 1 is ID
     NSString *identification = fileLines[lineIndex];
     lineIndex += 1;
@@ -98,6 +104,10 @@
     lineIndex += 1;
     
     // Line 2
+    if (lineComponents.count < 8)
+    {
+        return NULL;
+    }
     int inputUnits = [(NSString *)lineComponents[0] intValue];
     int numPhases = [(NSString *)lineComponents[1] intValue];
     double frequency = [(NSString *)lineComponents[2] doubleValue];
@@ -111,6 +121,10 @@
     lineIndex += 1;
     
     // Line 3
+    if (lineComponents.count < 7)
+    {
+        return NULL;
+    }
     double distanceToTank = [(NSString *)lineComponents[0] doubleValue];
     int alcuShield = [(NSString *)lineComponents[1] intValue];
     double sysScGVA = [(NSString *)lineComponents[2] doubleValue];
@@ -123,6 +137,10 @@
     lineIndex += 1;
     
     // Line 4
+    if (lineComponents.count < 7)
+    {
+        return NULL;
+    }
     int dispElon = [(NSString *)lineComponents[0] intValue];
     double deAmount = [(NSString *)lineComponents[1] doubleValue];
     double tankFactor = [(NSString *)lineComponents[2] doubleValue];
@@ -138,6 +156,10 @@
     
     for (int i=0; i<numTerminals; i++)
     {
+        if (lineComponents.count < 4)
+        {
+            return NULL;
+        }
         int terminalNum = [(NSString *)lineComponents[0] intValue];
         int connection = [(NSString *)lineComponents[1] intValue];
         double mva = [(NSString *)lineComponents[2] doubleValue];
@@ -154,6 +176,10 @@
     
     for (int i=0; i<numLayers; i++)
     {
+        if (lineComponents.count < 4)
+        {
+            return NULL;
+        }
         int layerNumber = [(NSString *)lineComponents[0] intValue];
         int lastSegment = [(NSString *)lineComponents[1] intValue];
         maxSegment = (lastSegment > maxSegment ? lastSegment : maxSegment);
@@ -163,6 +189,10 @@
         lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
         lineIndex += 1;
         
+        if (lineComponents.count < 6)
+        {
+            return NULL;
+        }
         int terminalNum = [(NSString *)lineComponents[0] intValue];
         int numParGroups = [(NSString *)lineComponents[1] intValue];
         int currentDirection = [(NSString *)lineComponents[2] intValue];
@@ -180,6 +210,10 @@
     
     for (int i=0; i<maxSegment; i++)
     {
+        if (lineComponents.count < 5)
+        {
+            return NULL;
+        }
         int segmentNumber = [(NSString *)lineComponents[0] intValue];
         double zMin = [(NSString *)lineComponents[1] doubleValue];
         double zMax = [(NSString *)lineComponents[2] doubleValue];
@@ -189,6 +223,10 @@
         lineComponents = [PCH_FLD12_TxfoDetails nonNullComponentsOfString:fileLines[lineIndex]];
         lineIndex += 1;
         
+        if (lineComponents.count < 4)
+        {
+            return NULL;
+        }
         int strandsPerTurn = [(NSString *)lineComponents[0] intValue];
         int strandsPerLayer = [(NSString *)lineComponents[1] intValue];
         double strandR = [(NSString *)lineComponents[2] doubleValue];
