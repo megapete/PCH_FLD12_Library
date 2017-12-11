@@ -52,7 +52,7 @@ struct SegmentData {
 @property double totalThrustUpper;
 @property double totalThrustLower;
 
-- (id _Nonnull)initWithOutputFile:(NSString *_Nonnull)fileString;
-+ (id _Nonnull)dataWithOutputFile:(NSString *_Nonnull)fileString;
+- (id _Nullable)initWithOutputFile:(NSString *_Nonnull)fileString;
++ (id _Nullable)dataWithOutputFile:(NSString *_Nonnull)fileString;
 
 @end

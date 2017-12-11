@@ -23,7 +23,19 @@
     {
         NSArray *fileLines = [fileString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         
+        // The first line MUST have the string PROGRAM FLD12 in the first line
+        if (![fileLines[0] containsString:@"PROGRAM FLD12"])
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
+        
         int lineIndex = 2; // first couple of lines are useless
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         
         PCH_FLD12_TxfoDetails *txfo = [[PCH_FLD12_TxfoDetails alloc] init];
         
@@ -33,6 +45,11 @@
         while (![fileLines[lineIndex] containsString:@"NUMBER OF PHASES"])
         {
             lineIndex += 1;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
         }
         
         NSArray *lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
@@ -60,6 +77,12 @@
         }
         
         lineIndex++;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
+        
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         count = 0;
@@ -81,6 +104,11 @@
         }
         
         lineIndex++;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         count = 0;
@@ -102,6 +130,11 @@
         }
         
         lineIndex += 2;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // we need to save this becuase of a fucking stupid Andersen issue
@@ -133,6 +166,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         count = 0;
@@ -160,6 +198,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         count = 0;
@@ -184,6 +227,11 @@
         txfo.inputUnits = (txfo.coreDiameter > 50.0 ? 1 : 2);
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         count = 0;
@@ -205,6 +253,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         count = 0;
@@ -229,6 +282,11 @@
         while (![fileLines[lineIndex] containsString:@"TERMINAL NUMBER"])
         {
             lineIndex += 1;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
         }
         
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
@@ -245,6 +303,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         for (int i=0; i<numTerminals; i++)
@@ -261,6 +324,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         for (int i=0; i<numTerminals; i++)
@@ -269,6 +337,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         for (int i=0; i<numTerminals; i++)
@@ -289,8 +362,18 @@
         {
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             lineIndex += 1;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
         }
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         int maxSegNum = 0;
@@ -323,6 +406,11 @@
             [layerArray addObject:newLayer];
             
             lineIndex += 1;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         }
         
@@ -333,13 +421,30 @@
         while (![fileLines[lineIndex] containsString:@"AXIALLY"])
         {
             lineIndex += 1;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
         }
+        
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         
         NSMutableArray *segmentArray = [NSMutableArray arrayWithCapacity:maxSegNum];
         int firstSegLine = lineIndex;
         for (; lineIndex < firstSegLine + maxSegNum; lineIndex++)
         {
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
+            
             PCH_FLD12_Segment *newSegment = [[PCH_FLD12_Segment alloc] init];
             
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
@@ -375,6 +480,11 @@
         while (![fileLines[lineIndex] containsString:@"SEGMENT NUMBER"])
         {
             lineIndex += 1;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
         }
         
         NSMutableArray *newSegmentData = [NSMutableArray array];
@@ -396,6 +506,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 1
@@ -409,6 +524,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 2
@@ -431,6 +551,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 3
@@ -444,6 +569,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 4
@@ -466,6 +596,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 5
@@ -488,6 +623,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 6
@@ -501,6 +641,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 7
@@ -523,6 +668,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 8
@@ -536,6 +686,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 9
@@ -558,6 +713,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 10
@@ -580,6 +740,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 11
@@ -593,6 +758,11 @@
             }
             
             lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 12
@@ -607,6 +777,11 @@
             
             // Line 13 has nothing
             lineIndex += 2;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
             lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
             
             // Line 14
@@ -645,10 +820,20 @@
             
             [newSegmentData addObject:[NSData dataWithBytes:&nextSegment length:sizeof(struct SegmentData)]];
             lineIndex += 2;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
         }
         
         // We ignore the whole "critical stresses" part (we can find them in the segment details already parsed)
         lineIndex += 11;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line VOLTS PER TURN
@@ -662,6 +847,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line FLUX DENSITY AT TANK
@@ -675,6 +865,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line FLUX DENSITY AT CORE LEG
@@ -688,6 +883,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line BASE MVA
@@ -701,6 +901,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line REACTANCE
@@ -714,6 +919,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line RESISTANCE
@@ -727,6 +937,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line IMPEDANCE
@@ -740,6 +955,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line SYSTEM IMPEDANCE
@@ -753,6 +973,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line TOTAL IMPEDANCE
@@ -766,6 +991,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line FORCE IMPEDANCE
@@ -781,6 +1011,11 @@
         while (![fileLines[lineIndex] containsString:@"UPPER SUPPORT"])
         {
             lineIndex += 1;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
         }
         
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
@@ -796,6 +1031,11 @@
         }
         
         lineIndex += 1;
+        if (lineIndex >= fileLines.count)
+        {
+            DLog(@"This is not a valid FLD12 output file");
+            return nil;
+        }
         lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
         
         // Line LOWER SUPPORT thrust
