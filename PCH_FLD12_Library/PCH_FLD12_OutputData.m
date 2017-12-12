@@ -827,6 +827,8 @@
             }
         }
         
+        self.segmentData = [NSArray arrayWithArray:newSegmentData];
+        
         // We ignore the whole "critical stresses" part (we can find them in the segment details already parsed)
         lineIndex += 11;
         if (lineIndex >= fileLines.count)
