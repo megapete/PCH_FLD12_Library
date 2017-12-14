@@ -24,4 +24,6 @@ typedef NS_ENUM(NSUInteger, PCH_FLD12_OutputType) {
 
 + (PCH_FLD12_OutputData * _Nonnull)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *_Nonnull)txfo outputType:(PCH_FLD12_OutputType)outputType;
 
++ (NSString * _Nonnull)CreateFLD12InputFileWithTxfo:(PCH_FLD12_TxfoDetails *_Nonnull)txfo;
+
 @end

@@ -233,4 +233,112 @@ int FIELDPRPMAIN__(char *baseDirectory);
 }
 
 
++ (NSString * _Nonnull)CreateFLD12InputFileWithTxfo:(PCH_FLD12_TxfoDetails *_Nonnull)txfo
+{
+    NSMutableString *result = [NSMutableString string];
+    NSString *nextLine;
+    
+    // Line 1
+    [result appendFormat:@"%@\n", txfo.identification];
+    
+    // Line 2
+    nextLine = [NSString stringWithFormat:@"%-10.1d%-10.1d%-10.1f%-10.1d%-10.1d%-10.3f%-10.3f%-10.3f\n",
+                txfo.inputUnits,
+                txfo.numPhases,
+                txfo.frequency,
+                txfo.numberOfWoundLimbs,
+                1,
+                txfo.lowerZ,
+                txfo.upperZ,
+                txfo.coreDiameter
+                ];
+    [result appendString:nextLine];
+    
+    // Line 3
+    nextLine = [NSString stringWithFormat:@"%-10.3f%-10.1d%-10.3f%-10.3f%-10.3f%-10.1d%-10.1d\n",
+                txfo.distanceToTank,
+                txfo.alcuShield,
+                txfo.sysSCgva,
+                txfo.puImpedance,
+                txfo.peakFactor,
+                txfo.numTerminals,
+                txfo.numLayers
+                ];
+    [result appendString:nextLine];
+    
+    // Line 4
+    nextLine = [NSString stringWithFormat:@"%-10.1d%-10.3f%-10.3f%-10.3f%-10.3f%-10.1f%-10.1d\n",
+                txfo.dispElon,
+                txfo.deAmount,
+                txfo.tankFactor,
+                txfo.legFactor,
+                txfo.yokeFactor,
+                txfo.scale,
+                txfo.numFluxLines
+                ];
+    [result appendString:nextLine];
+    
+    
+    // Terminals
+    for (PCH_FLD12_Terminal *nextTerminal in txfo.terminals)
+    {
+        nextLine = [NSString stringWithFormat:@"%-10.1d%-10.1d%-10.3f%-10.3f\n",
+                    nextTerminal.number,
+                    nextTerminal.connection,
+                    nextTerminal.mva,
+                    nextTerminal.kv
+                    ];
+        [result appendString:nextLine];
+    }
+    
+    NSMutableArray *segments = [NSMutableArray array];
+    
+    // Layers
+    for (PCH_FLD12_Layer *nextLayer in txfo.layers)
+    {
+        [segments addObjectsFromArray:nextLayer.segments];
+        
+        nextLine = [NSString stringWithFormat:@"%-10.1d%-10.1d%-10.3f%-10.3f\n",
+                    nextLayer.number,
+                    nextLayer.lastSegment,
+                    nextLayer.innerRadius,
+                    nextLayer.radialBuild
+                    ];
+        [result appendString:nextLine];
+        
+        nextLine = [NSString stringWithFormat:@"%-10.1d%-10.1d%-10.1d%-10.1d%-10.1d%-10.3f\n",
+                    nextLayer.terminal,
+                    nextLayer.numParGroups,
+                    nextLayer.currentDirection,
+                    nextLayer.cuOrAl,
+                    nextLayer.numSpacerBlocks,
+                    nextLayer.spBlkWidth
+                    ];
+        [result appendString:nextLine];
+    }
+    
+    // Segments
+    for (PCH_FLD12_Segment *nextSegment in segments)
+    {
+        nextLine = [NSString stringWithFormat:@"%-10.1d%-10.3f%-10.3f%-10.3f%-10.3f\n",
+                    nextSegment.segmentNumber,
+                    nextSegment.zMin,
+                    nextSegment.zMax,
+                    nextSegment.turns,
+                    nextSegment.activeTurns
+                    ];
+        [result appendString:nextLine];
+        
+        nextLine = [NSString stringWithFormat:@"%-10.1d%-10.1d%-10.3f%-10.3f\n",
+                    nextSegment.strandsPerTurn,
+                    nextSegment.strandsPerLayer,
+                    nextSegment.strandR,
+                    nextSegment.strandA
+                    ];
+        [result appendString:nextLine];
+    }
+    
+    return result;
+}
+
 @end
