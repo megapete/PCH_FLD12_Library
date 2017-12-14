@@ -30,6 +30,38 @@
     return self;
 }
 
+- (BOOL)isEqualToLayer:(PCH_FLD12_Layer *)layer
+{
+    if ((self.segments == NULL) || (layer.segments == NULL))
+    {
+        return false;
+    }
+    
+    if (self.segments.count != layer.segments.count)
+    {
+        return false;
+    }
+    
+    for (int i=0; i<self.segments.count; i++)
+    {
+        if (![(PCH_FLD12_Segment *)self.segments[i] isEqualToSegment:layer.segments[i]])
+        {
+            return false;
+        }
+    }
+    
+    return self.number == layer.number &&
+           self.lastSegment == layer.lastSegment &&
+           self.innerRadius == layer.innerRadius &&
+           self.radialBuild == layer.radialBuild &&
+           self.terminal == layer.terminal &&
+           self.numParGroups == layer.numParGroups &&
+           self.currentDirection == layer.currentDirection &&
+           self.cuOrAl == layer.cuOrAl &&
+           self.numSpacerBlocks == layer.numSpacerBlocks &&
+           self.spBlkWidth == layer.spBlkWidth;
+}
+
 + (id)layerWithNumber:(int)number lastSegment:(int)lastSegment innerRadius:(double)innerRadius radialBuild:(double)radialBuild terminal:(int)terminal numParGroups:(int)numParGroups currentDirection:(int)currentDirection cuOrAl:(int)cuOrAl numSpacerBlocks:(int)numSpacerBlocks spBlkWidth:(double)spBlkWidth
 {
     return [[PCH_FLD12_Layer alloc] initWithNumber:number lastSegment:lastSegment innerRadius:innerRadius radialBuild:radialBuild terminal:terminal numParGroups:numParGroups currentDirection:currentDirection cuOrAl:cuOrAl numSpacerBlocks:numSpacerBlocks spBlkWidth:spBlkWidth segments:NULL];

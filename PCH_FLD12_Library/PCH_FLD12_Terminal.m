@@ -23,6 +23,14 @@
     return self;
 }
 
+- (BOOL)isEqualToTerminal:(PCH_FLD12_Terminal *)terminal
+{
+    return self.number == terminal.number &&
+           self.connection == terminal.connection &&
+           self.mva == terminal.mva &&
+           self.kv == terminal.kv;
+}
+
 + (id)terminalWithNumber:(int)number connection:(int)connection mva:(double)mva kv:(double)kv
 {
     return [[PCH_FLD12_Terminal alloc] initWithNumber:number connection:connection mva:mva kv:kv];

@@ -50,4 +50,6 @@
 - (id _Nullable)initWithURL:(NSURL *_Nonnull)url;
 + (id _Nullable)txfoDetailsWithURL:(NSURL *_Nonnull)url;
 
+- (BOOL)isEqualToTransformer:(PCH_FLD12_TxfoDetails *)txfo;
+
 @end

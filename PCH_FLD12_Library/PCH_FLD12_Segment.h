@@ -24,4 +24,6 @@
 
 + (id _Nonnull)segmentWithNumber:(int)segmentNumber zMin:(double)zMin zMax:(double)zMax turns:(double)turns activeTurns:(double)activeTurns strandsPerTurn:(int)strandsPerTurn strandsPerLayer:(int)strandsPerLayer strandR:(double)strandR strandA:(double)strandA;
 
+- (BOOL)isEqualToSegment:(PCH_FLD12_Segment *_Nonnull)segment;
+
 @end

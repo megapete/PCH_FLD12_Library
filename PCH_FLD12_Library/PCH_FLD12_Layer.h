@@ -30,4 +30,6 @@
 
 + (id _Nonnull)layerWithNumber:(int)number innerRadius:(double)innerRadius radialBuild:(double)radialBuild terminal:(int)terminal numParGroups:(int)numParGroups currentDirection:(int)currentDirection numSpacerBlocks:(int)numSpacerBlocks spBlkWidth:(double)spBlkWidth segments:(NSArray*_Nullable)segments;
 
+- (BOOL)isEqualToLayer:(PCH_FLD12_Layer *_Nonnull)layer;
+
 @end

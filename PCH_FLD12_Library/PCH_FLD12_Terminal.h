@@ -18,4 +18,6 @@
 - (id _Nonnull)initWithNumber:(int)number connection:(int)connection mva:(double)mva kv:(double)kv;
 + (id _Nonnull)terminalWithNumber:(int)number connection:(int)connection mva:(double)mva kv:(double)kv;
 
+- (BOOL)isEqualToTerminal:(PCH_FLD12_Terminal *)terminal;
+
 @end

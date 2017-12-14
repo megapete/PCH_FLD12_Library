@@ -60,6 +60,52 @@
     return self;
 }
 
+- (BOOL)isEqualToTransformer:(PCH_FLD12_TxfoDetails *)txfo
+{
+    if (self.terminals == NULL || self.layers == NULL || txfo.terminals == NULL || txfo.layers == NULL)
+    {
+        return false;
+    }
+    
+    if ((self.terminals.count != txfo.terminals.count) || (self.layers.count != txfo.layers.count))
+    {
+        return false;
+    }
+    
+    if (self.dispElon != txfo.dispElon)
+    {
+        return false;
+    }
+    else if (self.dispElon != 0)
+    {
+        if (self.deAmount != txfo.deAmount)
+        {
+            return false;
+        }
+    }
+    
+    return [self.identification isEqualToString:txfo.identification] &&
+            self.inputUnits == txfo.inputUnits &&
+            self.numPhases == txfo.numPhases &&
+            self.frequency == txfo.frequency &&
+            self.numberOfWoundLimbs == txfo.numberOfWoundLimbs &&
+            self.lowerZ == txfo.lowerZ &&
+            self.upperZ == txfo.upperZ &&
+            self.coreDiameter == txfo.coreDiameter &&
+            self.distanceToTank == txfo.distanceToTank &&
+            self.alcuShield == txfo.alcuShield &&
+            self.sysSCgva == txfo.sysSCgva &&
+            self.puImpedance == txfo.puImpedance &&
+            self.peakFactor == txfo.peakFactor &&
+            // self.dispElon == txfo.dispElon &&
+            // self.deAmount == txfo.deAmount &&
+            self.tankFactor == txfo.tankFactor &&
+            self.legFactor == txfo.legFactor &&
+            self.yokeFactor == txfo.yokeFactor &&
+            self.scale == txfo.scale &&
+            self.numFluxLines == txfo.numFluxLines;
+}
+
 + (id)txfoDetailsWithId:(NSString *)identification inputUnits:(int)inputUnits numPhases:(int)numPhases frequency:(double)frequency numberOfWoundLimbs:(int)numberOfWoundLimbs lowerZ:(double)lowerZ upperZ:(double)upperZ coreDiameter:(double)coreDiameter distanceToTank:(double)distanceToTank sysSCgva:(double)sysSCgva puImpedance:(double)puImpedance peakFactor:(double)peakFactor numTerminals:(int)numTerminals numLayers:(int)numLayers dispElon:(int)dispElon deAmount:(double)deAmount
 {
     return [[PCH_FLD12_TxfoDetails alloc] initWithId:identification inputUnits:inputUnits numPhases:numPhases frequency:frequency numberOfWoundLimbs:numberOfWoundLimbs lowerZ:lowerZ upperZ:upperZ coreDiameter:coreDiameter distanceToTank:distanceToTank alcuShield:0 sysSCgva:sysSCgva puImpedance:puImpedance peakFactor:peakFactor numTerminals:numTerminals numLayers:numLayers dispElon:dispElon deAmount:deAmount tankFactor:0.0 legFactor:0.0 yokeFactor:0.0 scale:1.0 numFluxLines:25 terminals:NULL layers:NULL];

@@ -33,4 +33,18 @@
     return [[PCH_FLD12_Segment alloc] initWithNumber:segmentNumber zMin:zMin zMax:zMax turns:turns activeTurns:activeTurns strandsPerTurn:strandsPerTurn strandsPerLayer:strandsPerLayer strandR:strandR strandA:strandA];
 }
 
+
+- (BOOL)isEqualToSegment:(PCH_FLD12_Segment *)segment
+{
+    return self.segmentNumber == segment.segmentNumber &&
+           self.zMin == segment.zMin &&
+           self.zMax == segment.zMax &&
+           self.turns == segment.turns &&
+           self.activeTurns == segment.activeTurns &&
+           self.strandsPerTurn == segment.strandsPerTurn &&
+           self.strandsPerLayer == segment.strandsPerLayer &&
+           self.strandR == segment.strandR &&
+           self.strandA == segment.strandA;
+}
+
 @end
