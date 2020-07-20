@@ -158,7 +158,7 @@
     int numPhases = [(NSString *)lineComponents[1] intValue];
     double frequency = [(NSString *)lineComponents[2] doubleValue];
     int numWoundLimbs = [(NSString *)lineComponents[3] intValue];
-    double fractionOfWindHt = [(NSString *)lineComponents[4] doubleValue]; // this value isn't used
+    // double fractionOfWindHt = [(NSString *)lineComponents[4] doubleValue]; // this value isn't used
     double zLowerBoundary = [(NSString *)lineComponents[5] doubleValue];
     double zUpperBoundary = [(NSString *)lineComponents[6] doubleValue];
     double coreDiameter = [(NSString *)lineComponents[7] doubleValue];
