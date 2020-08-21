@@ -29,6 +29,8 @@ int FIELDPRPMAIN__(char *baseDirectory);
     // We need to make sure that the ATPCM file exists in the temporary directory. If it doesn't, we will assume that the file exists in the user's Documents folder and copy it to the temp folder.
     
     NSString *tempATPCM = [NSString stringWithFormat:@"%@ATPCM.FIL", userTempDir];
+    DLog(@"Temp directory: %@", tempATPCM);
+    
     if (![fileMgr fileExistsAtPath:tempATPCM])
     {
         NSArray *docDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -36,9 +38,25 @@ int FIELDPRPMAIN__(char *baseDirectory);
         
         NSError *wError;
         
+        if (![fileMgr fileExistsAtPath:srcATPCM])
+        {
+            NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+            [openPanel setTitle:@"Find ATPCM.FIL"];
+            [openPanel setMessage:@"Select the file ATPCM"];
+            
+            if ([openPanel runModal] == NSModalResponseOK)
+            {
+                srcATPCM = [NSString stringWithString:[[openPanel URL] path]];
+            }
+        }
+        
         if (![fileMgr copyItemAtPath:srcATPCM toPath:tempATPCM error:&wError])
         {
             DLog(@"Error copying ATPCM.FIL. %@", wError.localizedDescription);
+            
+            NSAlert *errPanel = [NSAlert alertWithError:wError];
+            [errPanel runModal];
+            
             return @"ERROR - NO ATCPM.FIL file available";
         }
     }
@@ -53,18 +71,36 @@ int FIELDPRPMAIN__(char *baseDirectory);
     if (![fileString writeToFile:inp1Fil atomically:NO encoding:NSUTF8StringEncoding error:&wError])
     {
         DLog(@"Error creating INP1.FIL. %@", wError.localizedDescription);
+        
+        NSAlert *errPanel = [NSAlert alertWithError:wError];
+        [errPanel runModal];
+        
         return @"ERROR - Could not create INP1.FIL";
     }
     
     if (INP12MAIN__((char *)[userTempDir cStringUsingEncoding:NSUTF8StringEncoding]) != 0)
     {
         DLog(@"Error in Inp12. %@", wError.localizedDescription);
+        
+        NSAlert *errPanel = [[NSAlert alloc] init];
+        [errPanel setMessageText:@"ANDERSEN ERROR"];
+        [errPanel setAlertStyle:NSAlertStyleCritical];
+        [errPanel setInformativeText:@"INP12 Failed"];
+        [errPanel runModal];
+        
         return @"ERROR - Error in INP12";
     }
     
     if (FLD8MAIN__((char *)[userTempDir cStringUsingEncoding:NSUTF8StringEncoding]) != 0)
     {
         DLog(@"Error in Fld8. %@", wError.localizedDescription);
+        
+        NSAlert *errPanel = [[NSAlert alloc] init];
+        [errPanel setMessageText:@"ANDERSEN ERROR"];
+        [errPanel setAlertStyle:NSAlertStyleCritical];
+        [errPanel setInformativeText:@"FLD8 Failed"];
+        [errPanel runModal];
+        
         return @"ERROR - Error in FLD8";
     }
     
@@ -83,6 +119,13 @@ int FIELDPRPMAIN__(char *baseDirectory);
         if (OUTMETMAIN__((char *)[userTempDir cStringUsingEncoding:NSUTF8StringEncoding]) != 0)
         {
             DLog(@"Error in OutEng. %@", wError.localizedDescription);
+            
+            NSAlert *errPanel = [[NSAlert alloc] init];
+            [errPanel setMessageText:@"ANDERSEN ERROR"];
+            [errPanel setAlertStyle:NSAlertStyleCritical];
+            [errPanel setInformativeText:@"OUTMET Failed"];
+            [errPanel runModal];
+            
             return @"ERROR - Error in OUTMET";
         }
     }
@@ -91,6 +134,13 @@ int FIELDPRPMAIN__(char *baseDirectory);
         if (OUTENGMAIN__((char *)[userTempDir cStringUsingEncoding:NSUTF8StringEncoding]) != 0)
         {
             DLog(@"Error in OutEng. %@", wError.localizedDescription);
+            
+            NSAlert *errPanel = [[NSAlert alloc] init];
+            [errPanel setMessageText:@"ANDERSEN ERROR"];
+            [errPanel setAlertStyle:NSAlertStyleCritical];
+            [errPanel setInformativeText:@"OUTENG Failed"];
+            [errPanel runModal];
+            
             return @"ERROR - Error in OUTENG";
         }
     }
@@ -101,6 +151,13 @@ int FIELDPRPMAIN__(char *baseDirectory);
         if (FIELDPRPMAIN__((char *)[userTempDir cStringUsingEncoding:NSUTF8StringEncoding]) != 0)
         {
             DLog(@"Error in FieldPrep. %@", wError.localizedDescription);
+            
+            NSAlert *errPanel = [[NSAlert alloc] init];
+            [errPanel setMessageText:@"ANDERSEN ERROR"];
+            [errPanel setAlertStyle:NSAlertStyleCritical];
+            [errPanel setInformativeText:@"FIELDPREP Failed"];
+            [errPanel runModal];
+            
             return @"ERROR - Error in FIELDPREP";
         }
     }
@@ -220,7 +277,12 @@ int FIELDPRPMAIN__(char *baseDirectory);
     
     NSURL *resultURL = [NSURL fileURLWithPath:userTempDir];
     
-    [result writeToURL:resultURL atomically:false encoding:NSUTF8StringEncoding error:NULL];
+    NSError *wError;
+    if (![result writeToURL:resultURL atomically:false encoding:NSUTF8StringEncoding error:&wError])
+    {
+        NSAlert *errPanel = [NSAlert alertWithError:wError];
+        [errPanel runModal];
+    }
     
     return [PCH_FLD12_Library RunFLD12withString:result outputType:outputType withFluxLines:withFluxLines];
 }
@@ -228,6 +290,14 @@ int FIELDPRPMAIN__(char *baseDirectory);
 + (PCH_FLD12_OutputData *)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *)txfo outputType:(PCH_FLD12_OutputType)outputType
 {
     NSString *outputString = [PCH_FLD12_Library RunFLD12withTxfo:txfo outputType:outputType withFluxLines:false];
+    
+    if ([outputString hasPrefix:@"ERROR"])
+    {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"ANDERSEN ERROR"];
+        [alert setInformativeText:outputString];
+        [alert runModal];
+    }
     
     return [PCH_FLD12_OutputData dataWithOutputFile:outputString];
 }

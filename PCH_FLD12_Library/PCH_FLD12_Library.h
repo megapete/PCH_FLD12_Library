@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 #import "PCH_FLD12_TxfoDetails.h"
 #import "PCH_FLD12_OutputData.h"
 
