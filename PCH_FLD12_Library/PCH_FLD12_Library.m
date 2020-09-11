@@ -23,18 +23,36 @@ int FIELDPRPMAIN__(char *baseDirectory);
 
 + (NSString*)RunFLD12withString:(NSString *)fileString outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines
 {
-    NSString *userTempDir = NSTemporaryDirectory();
+    // NSString *userTempDir = NSTemporaryDirectory();
     
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     // We need to make sure that the ATPCM file exists in the temporary directory. If it doesn't, we will assume that the file exists in the user's Documents folder and copy it to the temp folder.
     
-    NSString *tempATPCM = [NSString stringWithFormat:@"%@ATPCM.FIL", userTempDir];
+    NSArray *urlArray = [fileMgr URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
+    NSURL *appSupportUrl = [urlArray[0] URLByAppendingPathComponent:@"com.huberistech.fld12library" isDirectory:true];
+    if (![fileMgr fileExistsAtPath:appSupportUrl.path])
+    {
+        NSError *wError;
+        if (![fileMgr createDirectoryAtURL:appSupportUrl withIntermediateDirectories:false attributes:nil error:&wError])
+        {
+            NSAlert *errPanel = [NSAlert alertWithError:wError];
+            [errPanel runModal];
+            
+            return @"ERROR - Could not create Application Support Directory";
+        }
+    }
+    
+    NSURL *atpcmUrl = [appSupportUrl URLByAppendingPathComponent:@"ATPCM.FIL" isDirectory:false];
+    NSString *userTempDir = [NSString stringWithFormat:@"%@/", appSupportUrl.path];
+    
+    NSString *tempATPCM = atpcmUrl.path;
     DLog(@"Temp directory: %@", tempATPCM);
     
     if (![fileMgr fileExistsAtPath:tempATPCM])
     {
-        NSArray *docDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *srcATPCM = [NSString stringWithFormat:@"%@/ATPCM.FIL", docDir[0]];
+        NSArray *docDirUrlArray = [fileMgr URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+        NSURL *docDirUrl = docDirUrlArray[0];
+        NSString *srcATPCM = [NSString stringWithFormat:@"%@/ATPCM.FIL", docDirUrl.path];
         
         NSError *wError;
         
