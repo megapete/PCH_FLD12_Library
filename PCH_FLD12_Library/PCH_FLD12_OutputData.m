@@ -1010,6 +1010,185 @@
             }
         }
         
+        while (![fileLines[lineIndex] containsString:@"LAYER NUMBER"])
+        {
+            lineIndex += 1;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
+        }
+        
+        
+        
+        NSMutableArray *newLayerArray = [NSMutableArray array];
+        
+        // Get the layer data (which has Terminal data interleaved in it...sigh)
+        while ([fileLines[lineIndex] containsString:@"LAYER NUMBER"] || [fileLines[lineIndex] containsString:@"TERMINAL NUMBER"])
+        {
+            // ignore terminal data
+            if ([fileLines[lineIndex] containsString:@"TERMINAL NUMBER"])
+            {
+                lineIndex += 6;
+                if (lineIndex >= fileLines.count)
+                {
+                    DLog(@"This is not a valid FLD12 output file");
+                    return nil;
+                }
+                
+                continue;
+            }
+            
+            struct LayerData nextLayer;
+            
+            // parse the layer data
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+            for (NSString *nextComponent in lineComponents)
+            {
+                if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+                {
+                    nextLayer.number = (int)[nextComponent doubleValue];
+                    break; // this is the only number in this line
+                }
+            }
+            
+            lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+            
+            // DC Loss
+            for (NSString *nextComponent in lineComponents)
+            {
+                if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+                {
+                    nextLayer.dcLoss = [nextComponent doubleValue];
+                    break; // this is the only number in this line
+                }
+            }
+            
+            lineIndex += 2;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+            
+            // eddy loss due to axial flux
+            for (NSString *nextComponent in lineComponents)
+            {
+                if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+                {
+                    nextLayer.eddyLossAxialFlux = [nextComponent doubleValue];
+                    break; // this is the only number in this line
+                }
+            }
+            
+            lineIndex++;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+            
+            // eddy loss due to radial flux
+            for (NSString *nextComponent in lineComponents)
+            {
+                if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+                {
+                    nextLayer.eddyLossRadialFlux = [nextComponent doubleValue];
+                    break; // this is the only number in this line
+                }
+            }
+            
+            lineIndex += 2;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+            
+            // eddy loss average (pu)
+            for (NSString *nextComponent in lineComponents)
+            {
+                if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+                {
+                    nextLayer.eddyPUaverage = [nextComponent doubleValue];
+                    break; // this is the only number in this line
+                }
+            }
+            
+            lineIndex += 1;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+            
+            // eddy loss max (pu)
+            for (NSString *nextComponent in lineComponents)
+            {
+                if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+                {
+                    nextLayer.eddyPUmax = [nextComponent doubleValue];
+                    break; // this is the only number in this line
+                }
+            }
+            
+            lineIndex += 3;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
+            lineComponents = [PCH_FLD12_OutputData nonNullComponentsOfString:fileLines[lineIndex]];
+            
+            count = 0;
+            for (NSString *nextComponent in lineComponents)
+            {
+                if ([nextComponent rangeOfCharacterFromSet:nonNumber].location == NSNotFound)
+                {
+                    if (count == 0)
+                    {
+                        nextLayer.eddyMaxRect.origin.x = [nextComponent doubleValue];
+                        count++;
+                    }
+                    else if (count == 1)
+                    {
+                        nextLayer.eddyMaxRect.size.width = [nextComponent doubleValue] - nextLayer.eddyMaxRect.origin.x;
+                        count++;
+                    }
+                    else if (count == 2)
+                    {
+                        nextLayer.eddyMaxRect.origin.y = [nextComponent doubleValue];
+                        count++;
+                    }
+                    else
+                    {
+                        nextLayer.eddyMaxRect.size.height = [nextComponent doubleValue] - nextLayer.eddyMaxRect.origin.y;
+                    }
+                }
+            }
+            
+            [newLayerArray addObject:[NSData dataWithBytes:&nextLayer length:sizeof(struct LayerData)]];
+            lineIndex += 8;
+            if (lineIndex >= fileLines.count)
+            {
+                DLog(@"This is not a valid FLD12 output file");
+                return nil;
+            }
+        }
+        
+        self.layerData = [NSArray arrayWithArray:newLayerArray];
+        
         while (![fileLines[lineIndex] containsString:@"UPPER SUPPORT"])
         {
             lineIndex += 1;

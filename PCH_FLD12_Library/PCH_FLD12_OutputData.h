@@ -34,8 +34,20 @@ struct SegmentData {
     double scCombinedForce;
 };
 
+struct LayerData {
+    
+    int number;
+    double dcLoss;
+    double eddyLossAxialFlux;
+    double eddyLossRadialFlux;
+    double eddyPUaverage;
+    double eddyPUmax;
+    NSRect eddyMaxRect;
+};
+
 @property PCH_FLD12_TxfoDetails * _Nullable inputData;
 @property NSArray * _Nullable segmentData;
+@property NSArray * _Nullable layerData;
 
 @property double VperN;
 @property double BmaxAtTank;
