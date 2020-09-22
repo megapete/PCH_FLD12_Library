@@ -17,7 +17,7 @@
 
 @implementation PCH_FLD12_OutputData
 
-- (id)initWithOutputFile:(NSString *)fileString
+- (id)initWithOutputFile:(NSString *)fileString fluxLines:(NSString *_Nonnull)fluxLineData fld8File:(NSString *_Nonnull)fld8FileString
 {
     if (self = [super init])
     {
@@ -1020,8 +1020,6 @@
             }
         }
         
-        
-        
         NSMutableArray *newLayerArray = [NSMutableArray array];
         
         // Get the layer data (which has Terminal data interleaved in it...sigh)
@@ -1228,15 +1226,18 @@
                 break; // this is the only number in this line
             }
         }
+        
+        self.fluxLineData = fluxLineData;
+        self.fld8FileString = fld8FileString;
     }
     
     return self;
 }
 
 
-+ (id)dataWithOutputFile:(NSString *)fileString
++ (id)dataWithOutputFile:(NSString *)fileString  fluxLines:(NSString *_Nonnull)fluxLineData fld8File:(NSString *_Nonnull)fld8FileString
 {
-    return [[PCH_FLD12_OutputData alloc] initWithOutputFile:fileString];
+    return [[PCH_FLD12_OutputData alloc] initWithOutputFile:fileString fluxLines:fluxLineData fld8File:fld8FileString];
 }
 
 

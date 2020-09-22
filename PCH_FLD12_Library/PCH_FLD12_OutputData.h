@@ -49,6 +49,9 @@ struct LayerData {
 @property NSArray * _Nullable segmentData;
 @property NSArray * _Nullable layerData;
 
+@property NSString * _Nullable fluxLineData;
+@property NSString * _Nullable fld8FileString;
+
 @property double VperN;
 @property double BmaxAtTank;
 @property double BmaxAtLeg;
@@ -64,7 +67,7 @@ struct LayerData {
 @property double totalThrustUpper;
 @property double totalThrustLower;
 
-- (id _Nullable)initWithOutputFile:(NSString *_Nonnull)fileString;
-+ (id _Nullable)dataWithOutputFile:(NSString *_Nonnull)fileString;
+- (id _Nullable)initWithOutputFile:(NSString *_Nonnull)fileString fluxLines:(NSString *_Nonnull)fluxLineData fld8File:(NSString *_Nonnull)fld8FileString;
++ (id _Nullable)dataWithOutputFile:(NSString *_Nonnull)fileString fluxLines:(NSString *_Nonnull)fluxLineData fld8File:(NSString *_Nonnull)fld8FileString;
 
 @end

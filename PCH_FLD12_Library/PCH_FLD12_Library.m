@@ -21,7 +21,7 @@ int FIELDPRPMAIN__(char *baseDirectory);
 
 @implementation PCH_FLD12_Library
 
-+ (NSString*)RunFLD12withString:(NSString *)fileString outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines
++ (NSString * _Nonnull)RunFLD12withString:(NSString *_Nonnull)fileString outputType:(PCH_FLD12_OutputType)outputType fluxLineString:(NSString *_Nonnull*_Nullable)fluxLinePtr fld8String:(NSString *_Nonnull*_Nullable)fld8Ptr
 {
     // NSString *userTempDir = NSTemporaryDirectory();
     
@@ -132,6 +132,11 @@ int FIELDPRPMAIN__(char *baseDirectory);
         return @"ERROR - FLD8 did not create OUTPUT file";
     }
     
+    if (fld8Ptr != NULL)
+    {
+        *fld8Ptr = [NSString stringWithContentsOfFile:outputFileName encoding:NSUTF8StringEncoding error:NULL];
+    }
+    
     if (outputType == metric)
     {
         if (OUTMETMAIN__((char *)[userTempDir cStringUsingEncoding:NSUTF8StringEncoding]) != 0)
@@ -163,7 +168,7 @@ int FIELDPRPMAIN__(char *baseDirectory);
         }
     }
     
-    if (withFluxLines)
+    if (fluxLinePtr != NULL)
     {
         // Create the "BAS.FIL" file with the flux lines in it
         if (FIELDPRPMAIN__((char *)[userTempDir cStringUsingEncoding:NSUTF8StringEncoding]) != 0)
@@ -178,6 +183,8 @@ int FIELDPRPMAIN__(char *baseDirectory);
             
             return @"ERROR - Error in FIELDPREP";
         }
+        
+        *fluxLinePtr = [NSString stringWithContentsOfFile:[NSString stringWithFormat:@"%@BAS.FIL", userTempDir] encoding:NSUTF8StringEncoding error:NULL];
     }
     
     // The current file named "OUTPUT" is from either OUTMET or OUTENG
@@ -186,7 +193,14 @@ int FIELDPRPMAIN__(char *baseDirectory);
     return result;
 }
 
-+ (NSString *)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *)txfo outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines
++ (NSString*)RunFLD12withString:(NSString *)fileString outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines
+{
+    NSString *fluxLines = @"";
+    
+    return [PCH_FLD12_Library RunFLD12withString:fileString outputType:outputType fluxLineString:(withFluxLines ? &fluxLines : NULL) fld8String:NULL];
+}
+
++ (NSString * _Nonnull)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *_Nonnull)txfo outputType:(PCH_FLD12_OutputType)outputType fluxLineString:(NSString *_Nonnull*_Nullable)fluxLinePtr fld8String:(NSString *_Nonnull*_Nullable)fld8Ptr;
 {
     NSMutableString *result = [NSMutableString string];
     NSString *nextLine;
@@ -302,12 +316,23 @@ int FIELDPRPMAIN__(char *baseDirectory);
         [errPanel runModal];
     }
     
-    return [PCH_FLD12_Library RunFLD12withString:result outputType:outputType withFluxLines:withFluxLines];
+    return [PCH_FLD12_Library RunFLD12withString:result outputType:outputType fluxLineString:fluxLinePtr fld8String:fld8Ptr];
 }
+
++ (NSString *)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *)txfo outputType:(PCH_FLD12_OutputType)outputType withFluxLines:(BOOL)withFluxLines
+{
+    NSString *dummyFlux = @"";
+    
+    return [PCH_FLD12_Library RunFLD12withTxfo:txfo outputType:outputType fluxLineString:(withFluxLines ? &dummyFlux : NULL) fld8String:NULL];
+}
+
 
 + (PCH_FLD12_OutputData *)RunFLD12withTxfo:(PCH_FLD12_TxfoDetails *)txfo outputType:(PCH_FLD12_OutputType)outputType
 {
-    NSString *outputString = [PCH_FLD12_Library RunFLD12withTxfo:txfo outputType:outputType withFluxLines:false];
+    NSString *fluxLines = @"";
+    NSString *fld8File = @"";
+    
+    NSString *outputString = [PCH_FLD12_Library RunFLD12withTxfo:txfo outputType:outputType fluxLineString:&fluxLines fld8String:&fld8File];
     
     if ([outputString hasPrefix:@"ERROR"])
     {
@@ -317,7 +342,7 @@ int FIELDPRPMAIN__(char *baseDirectory);
         [alert runModal];
     }
     
-    return [PCH_FLD12_OutputData dataWithOutputFile:outputString];
+    return [PCH_FLD12_OutputData dataWithOutputFile:outputString fluxLines:fluxLines fld8File:fld8File];
 }
 
 
