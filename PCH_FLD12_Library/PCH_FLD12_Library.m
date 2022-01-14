@@ -222,7 +222,7 @@ int FIELDPRPMAIN__(char *baseDirectory);
     [result appendString:nextLine];
     
     // Line 3
-    nextLine = [NSString stringWithFormat:@"%-10.3f%-10.1d%-10.3f%-10.3f%-10.3f%-10.1d%-10.1d\n",
+    nextLine = [NSString stringWithFormat:@"%-10.3f%-10.1d%-10.3f%-10.4f%-10.3f%-10.1d%-10.1d\n",
                 txfo.distanceToTank,
                 txfo.alcuShield,
                 txfo.sysSCgva,
@@ -368,7 +368,7 @@ int FIELDPRPMAIN__(char *baseDirectory);
     [result appendString:nextLine];
     
     // Line 3
-    nextLine = [NSString stringWithFormat:@"%-10.3f%-10.1d%-10.3f%-10.3f%-10.3f%-10.1d%-10.1d\n",
+    nextLine = [NSString stringWithFormat:@"%-10.3f%-10.1d%-10.3f%-10.4f%-10.3f%-10.1d%-10.1d\n",
                 txfo.distanceToTank,
                 txfo.alcuShield,
                 txfo.sysSCgva,

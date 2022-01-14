@@ -71,7 +71,7 @@ static real outeng_c_b369 = 1.f;
     static char fmt_15[] = "(\002KV\002,f21.3,5f10.3)";
     static char fmt_16[] = "(/\002LAYER   LAST    INNER   RADIAL   TERM.   P"
 	    "AR.     DIR.   CU/AL   SPACER BLOCKS\002/\002NO.     SEGM.   RAD"
-	    ".    WIDTH    NO. \r   GROUPS   CUR.\002,11x,\002NUMBER  WIDT"
+	    ".    WIDTH    NO.    GROUPS   CUR.\002,11x,\002NUMBER  WIDT"
 	    "H\002)";
     static char fmt_17[] = "(f4.1,f8.1,f9.3,f8.3,2f8.1,f9.1,4x,a2,f10.1,f8.3)"
 	    ;
