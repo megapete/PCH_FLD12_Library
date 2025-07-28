@@ -43,6 +43,7 @@ int FIELDPRPMAIN__(char *baseDirectory);
     }
     
     NSURL *atpcmUrl = [appSupportUrl URLByAppendingPathComponent:@"ATPCM.FIL" isDirectory:false];
+    NSLog(@"ATPCM location: %@", atpcmUrl.path);
     NSString *userTempDir = [NSString stringWithFormat:@"%@/", appSupportUrl.path];
     
     NSString *tempATPCM = atpcmUrl.path;
